@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://cn02mlwcmyj60"]
+
+[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/character.tscn" id="2_6osjs"]
+[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/platform_3x.tscn" id="2_t51e7"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vm842"]
+bounce = 0.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g0is0"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcn4m"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Character" parent="." instance=ExtResource("2_6osjs")]
+position = Vector2(552, 250)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="Character"]
+physics_material_override = SubResource("PhysicsMaterial_vm842")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/RigidBody2D"]
+shape = SubResource("CircleShape2D_g0is0")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Character"]
+texture = SubResource("CompressedTexture2D_pcn4m")
+
+[node name="Platform3X" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(1, 583)
+
+[node name="Platform3X2" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(193, 583)
+
+[node name="Platform3X3" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(385, 583)
+
+[node name="Platform3X4" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(577, 583)
+
+[node name="Platform3X5" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(769, 583)
+
+[node name="Platform3X6" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(961, 583)

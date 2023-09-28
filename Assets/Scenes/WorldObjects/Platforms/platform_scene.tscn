@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://60wwnf5b306f"]
+
+[ext_resource type="Texture2D" uid="uid://dngw2sk80c6d7" path="res://Assets/ImageAssets/World/earthblock_16.png" id="1_0cbom"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2217g"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3qnmr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i61ep"]
+size = Vector2(1.54881, 64)
+
+[node name="PlatformScene" type="Node2D"]
+
+[node name="Platform" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_2217g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+material = SubResource("CanvasItemMaterial_3qnmr")
+position = Vector2(3.27826e-07, 0)
+scale = Vector2(41.322, 1)
+shape = SubResource("RectangleShape2D_i61ep")
+debug_color = Color(0.784314, 0.431373, 0.113725, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform"]
+texture = ExtResource("1_0cbom")
