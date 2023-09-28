@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn02mlwcmyj60"]
+
+[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/character.tscn" id="2_6osjs"]
+[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/platform_3x.tscn" id="2_t51e7"]
+
+[node name="Node" type="Node"]
+
+[node name="Platform3X" parent="." instance=ExtResource("2_t51e7")]
+position = Vector2(1, 584)
+
+[node name="Platform3X2" parent="Platform3X" instance=ExtResource("2_t51e7")]
+position = Vector2(193, 0)
+
+[node name="Platform3X" parent="Platform3X/Platform3X2" instance=ExtResource("2_t51e7")]
+position = Vector2(192, 0)
+
+[node name="Platform3X" parent="Platform3X/Platform3X2/Platform3X" instance=ExtResource("2_t51e7")]
+position = Vector2(192, 0)
+
+[node name="Platform3X2" parent="Platform3X/Platform3X2/Platform3X/Platform3X" instance=ExtResource("2_t51e7")]
+position = Vector2(192, 0)
+
+[node name="Platform3X" parent="Platform3X/Platform3X2/Platform3X/Platform3X/Platform3X2" instance=ExtResource("2_t51e7")]
+position = Vector2(192, 0)
+
+[node name="Character" parent="." instance=ExtResource("2_6osjs")]
+position = Vector2(535, 504)

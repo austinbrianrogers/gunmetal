@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkmyjer32pvpw"]
+
+[ext_resource type="PackedScene" uid="uid://60wwnf5b306f" path="res://Assets/Scenes/WorldObjects/Platforms/platform_scene.tscn" id="1_3xfl0"]
+
+[node name="Platform3X" type="Node2D"]
+
+[node name="PlatformScene" parent="." instance=ExtResource("1_3xfl0")]
+position = Vector2(32, 32)
+
+[node name="PlatformScene2" parent="PlatformScene" instance=ExtResource("1_3xfl0")]
+position = Vector2(64, 0)
+
+[node name="PlatformScene3" parent="PlatformScene/PlatformScene2" instance=ExtResource("1_3xfl0")]
+position = Vector2(64, 0)
