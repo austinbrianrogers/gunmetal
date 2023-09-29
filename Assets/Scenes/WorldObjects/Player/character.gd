@@ -22,10 +22,8 @@ func _process(delta):
 	var left = Input.is_action_pressed("move_left")
 	var right = Input.is_action_pressed("move_right")
 	if right:
-		set_scale(Vector2(RIGHT, 1))
 		velocity.x = MAX_SPEED_HORIZONTAL
 	else: if left:
-		set_scale(Vector2(LEFT, 1))
 		velocity.x = -MAX_SPEED_HORIZONTAL
 	else: if !left && !right:
 		velocity.x = 0
@@ -34,12 +32,17 @@ func _process(delta):
 	if Input.is_action_pressed("jump") && is_on_floor():
 		velocity.y = -MAX_SPEED_VERTICAL
 	
-	if velocity.length() > 0:
+	if velocity.length() > 0 && is_on_floor():
 		$AnimatedSprite2D.play("Run")
 	else: if is_on_floor():
 		$AnimatedSprite2D.play("Default")
 	else: 
 		$AnimatedSprite2D.play("Jump")
+		
+	if velocity.x < 0:
+		$AnimatedSprite2D.flip_h = true
+	if velocity.x > 0:
+		$AnimatedSprite2D.flip_h = false
 		
 	position = position.clamp(Vector2.ZERO, screen_bound)
 	pass
