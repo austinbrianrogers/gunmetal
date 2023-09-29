@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=16 format=3 uid="uid://5iar333b51ri"]
+[gd_resource type="SpriteFrames" load_steps=23 format=3 uid="uid://5iar333b51ri"]
 
 [ext_resource type="Texture2D" uid="uid://bid0cf602ks28" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle1.png" id="1_31c6p"]
 [ext_resource type="Texture2D" uid="uid://ceydwlng4873n" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle2.png" id="2_4dxba"]
@@ -7,13 +7,20 @@
 [ext_resource type="Texture2D" uid="uid://mcqscfd4lmn6" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle5.png" id="5_7qedw"]
 [ext_resource type="Texture2D" uid="uid://bm2g1q2oyndxb" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle6.png" id="6_jg3sc"]
 [ext_resource type="Texture2D" uid="uid://dki84e53xy5n7" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle7.png" id="7_ql7xb"]
+[ext_resource type="Texture2D" uid="uid://1dvcnpjbq0al" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump1.png" id="8_8ieaw"]
 [ext_resource type="Texture2D" uid="uid://cg1vi2qr1f3fx" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun1.png" id="8_aln0a"]
+[ext_resource type="Texture2D" uid="uid://cycwaj0yesl5t" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump2.png" id="9_beigw"]
 [ext_resource type="Texture2D" uid="uid://mmqf8rrljmo4" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun2.png" id="9_r2wri"]
 [ext_resource type="Texture2D" uid="uid://do57k5pk6p2pi" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun3.png" id="10_3201s"]
+[ext_resource type="Texture2D" uid="uid://dt5q5ht005b7e" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump3.png" id="10_qyrnm"]
+[ext_resource type="Texture2D" uid="uid://cfu60du77ubn4" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump4.png" id="11_p4615"]
 [ext_resource type="Texture2D" uid="uid://ccn1aacd0b85e" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun4.png" id="11_xgmvp"]
+[ext_resource type="Texture2D" uid="uid://eo8uvssk5jpv" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump5.png" id="12_pd13x"]
 [ext_resource type="Texture2D" uid="uid://62f3c8uko7vf" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun5.png" id="12_v42p3"]
 [ext_resource type="Texture2D" uid="uid://cskb11vuynrl2" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun6.png" id="13_3falf"]
+[ext_resource type="Texture2D" uid="uid://bwqfncwvgateg" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump6.png" id="13_6pq8q"]
 [ext_resource type="Texture2D" uid="uid://bii8p62v72qm1" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun7.png" id="14_orf80"]
+[ext_resource type="Texture2D" uid="uid://fs8mwlg6jpeb" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump7.png" id="14_pd7i6"]
 [ext_resource type="Texture2D" uid="uid://b3m8p2khv6fxe" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun8.png" id="15_ft210"]
 
 [resource]
@@ -43,6 +50,32 @@ animations = [{
 "loop": true,
 "name": &"Default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_8ieaw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_beigw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_qyrnm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_p4615")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_pd13x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_6pq8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_pd7i6")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
