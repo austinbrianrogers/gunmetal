@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=23 format=3 uid="uid://5iar333b51ri"]
+[gd_resource type="SpriteFrames" load_steps=24 format=3 uid="uid://5iar333b51ri"]
 
 [ext_resource type="Texture2D" uid="uid://bid0cf602ks28" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle1.png" id="1_31c6p"]
 [ext_resource type="Texture2D" uid="uid://ceydwlng4873n" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle2.png" id="2_4dxba"]
@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bii8p62v72qm1" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun7.png" id="14_orf80"]
 [ext_resource type="Texture2D" uid="uid://fs8mwlg6jpeb" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump7.png" id="14_pd7i6"]
 [ext_resource type="Texture2D" uid="uid://b3m8p2khv6fxe" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun8.png" id="15_ft210"]
+[ext_resource type="Texture2D" uid="uid://c4s7n75uldnqj" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneSoldier1.png" id="15_yopl0"]
 
 [resource]
 animations = [{
@@ -76,6 +77,14 @@ animations = [{
 "loop": true,
 "name": &"Jump",
 "speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_yopl0")
+}],
+"loop": true,
+"name": &"Prone",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
