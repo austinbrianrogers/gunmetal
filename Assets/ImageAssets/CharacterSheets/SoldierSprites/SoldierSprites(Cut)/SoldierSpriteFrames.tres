@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=24 format=3 uid="uid://5iar333b51ri"]
+[gd_resource type="SpriteFrames" load_steps=31 format=3 uid="uid://5iar333b51ri"]
 
 [ext_resource type="Texture2D" uid="uid://bid0cf602ks28" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle1.png" id="1_31c6p"]
 [ext_resource type="Texture2D" uid="uid://ceydwlng4873n" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierIdle2.png" id="2_4dxba"]
@@ -22,7 +22,14 @@
 [ext_resource type="Texture2D" uid="uid://bii8p62v72qm1" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun7.png" id="14_orf80"]
 [ext_resource type="Texture2D" uid="uid://fs8mwlg6jpeb" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierJump7.png" id="14_pd7i6"]
 [ext_resource type="Texture2D" uid="uid://b3m8p2khv6fxe" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierRun8.png" id="15_ft210"]
-[ext_resource type="Texture2D" uid="uid://c4s7n75uldnqj" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneSoldier1.png" id="15_yopl0"]
+[ext_resource type="Texture2D" uid="uid://b1ds6h00qi5n5" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneSoldier1.png" id="15_yopl0"]
+[ext_resource type="Texture2D" uid="uid://dku1ryfx15ybu" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneShooting1.png" id="16_5c8br"]
+[ext_resource type="Texture2D" uid="uid://dv6ao0vg5tjw4" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneShooting2.png" id="17_v1gfl"]
+[ext_resource type="Texture2D" uid="uid://cheqb7yq23bti" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneShooting3.png" id="18_c0spt"]
+[ext_resource type="Texture2D" uid="uid://bgsucjqvaoxst" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/Shooting1.png" id="24_mc4uc"]
+[ext_resource type="Texture2D" uid="uid://co8hagc1oahpo" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/Shooting2.png" id="25_q4am6"]
+[ext_resource type="Texture2D" uid="uid://dc5rdcd5pmce" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/Shooting3.png" id="26_aink5"]
+[ext_resource type="Texture2D" uid="uid://xsq1l3gje8lr" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/Shooting4.png" id="27_d7ea5"]
 
 [resource]
 animations = [{
@@ -88,6 +95,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("16_5c8br")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_v1gfl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_c0spt")
+}],
+"loop": true,
+"name": &"ProneShooting",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("8_aln0a")
 }, {
 "duration": 1.0,
@@ -114,4 +135,21 @@ animations = [{
 "loop": true,
 "name": &"Run",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("24_mc4uc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_q4am6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_aink5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_d7ea5")
+}],
+"loop": true,
+"name": &"Shooting",
+"speed": 15.0
 }]

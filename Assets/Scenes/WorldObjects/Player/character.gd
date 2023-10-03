@@ -1,5 +1,4 @@
 extends CharacterBody2D
-
 # compile time variables
 const GRAVITY = 1000
 const LEFT = -1
@@ -8,15 +7,10 @@ const MAX_SPEED_HORIZONTAL = 400
 const MAX_SPEED_VERTICAL = 550
 const JUMP_DELAY = .5
 
-# runtime variables
-var screen_bound
-var gravity_enabled = true
-var prone = false
-var hitboxStateProne = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	screen_bound = get_viewport_rect().size
+	_screen_bound = get_viewport_rect().size
+	_animator = $Control.get_node("AnimatedSprite2D")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,11 +19,12 @@ func _process(delta):
 	var left = Input.is_action_pressed("move_left")
 	var right = Input.is_action_pressed("move_right")
 	var jump = Input.is_action_just_pressed("jump")
+	var shooting = Input.is_action_pressed("shoot")
 	var floored = is_on_floor()
 	var moving = false
-	prone = Input.is_action_pressed("prone")
-	#velocity first
-	if floored:
+	_prone = Input.is_action_pressed("prone")
+	#attacks first
+	if floored && !shooting:
 		#side movement
 		if right:
 			velocity.x = MAX_SPEED_HORIZONTAL
@@ -41,46 +36,53 @@ func _process(delta):
 			velocity.x = 0
 		#player jumped
 		if  jump:
-			if moving: velocity.y = -MAX_SPEED_VERTICAL 
-			else: velocity.y = -MAX_SPEED_VERTICAL * 1.2		
-		else: if prone:
-			velocity = Vector2.ZERO
-			_change_height_to_prone(true)
+			if moving: 
+				velocity.y = -MAX_SPEED_VERTICAL 
+			else: 
+				velocity.y = -MAX_SPEED_VERTICAL * 1.2		
+		else: if _prone:
+				velocity = Vector2.ZERO
+				_change_height_to_prone(true)
 	else:
 		#player jumping already
-		if prone: velocity.y = MAX_SPEED_VERTICAL * 2
+		if _prone: velocity.y = MAX_SPEED_VERTICAL * 2
 	#screen limit
-	position = position.clamp(Vector2.ZERO, screen_bound)
+	position = position.clamp(Vector2.ZERO, _screen_bound)
 	#velocity dependent sprite flip
 	if velocity.x < 0:
-		$AnimatedSprite2D.flip_h = true
+		_animator.flip_h = true
 	if velocity.x > 0:
-		$AnimatedSprite2D.flip_h = false
+		_animator.flip_h = false
 	#animation handling
-	if floored && prone:
-		$AnimatedSprite2D.play("Prone")
-		$AnimatedSprite2D.stop();
+	if floored && _prone:
+		_animator.play("Prone")
+		_animator.stop()
+		if shooting:
+			_animator.play("ProneShooting")
 		pass
 	else: if moving && floored:
-		$AnimatedSprite2D.play("Run")
+		_animator.play("Run")
 	else: if floored:
-		$AnimatedSprite2D.play("Default")
+		if !shooting:
+			_animator.play("Default")
+		else:
+			_animator.play("Shooting")
 	else: 
-		$AnimatedSprite2D.play("Jump")
+		_animator.play("Jump")
 		
-	if !prone:
+	if !_prone:
 		_change_height_to_prone(false)	
 	pass
 	
 func _physics_process(delta):
-	if gravity_enabled:
+	if _gravity_enabled:
 		velocity.y += delta * GRAVITY
 		var motion = velocity * delta
 		move_and_slide()
 	pass
 	
 func _change_height_to_prone(enabled):
-	if enabled == hitboxStateProne:
+	if enabled == _hitboxStateProne:
 		pass
 	else:
 		if enabled:
@@ -88,6 +90,13 @@ func _change_height_to_prone(enabled):
 		else:
 			$CollisionShape2D.global_rotation_degrees = 0
 			position.y -= 1 #give him a small bump to stand upright
-	hitboxStateProne = enabled
+	_hitboxStateProne = enabled
 	pass
+	
+# runtime variables
+var _screen_bound
+var _gravity_enabled = true
+var _prone = false
+var _hitboxStateProne = false
+var _animator;
 

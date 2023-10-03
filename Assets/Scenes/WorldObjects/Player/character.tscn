@@ -8,12 +8,28 @@ radius = 15.0
 height = 66.0
 
 [node name="Character" type="CharacterBody2D"]
+floor_stop_on_slope = false
 script = ExtResource("1_41imp")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_g7h43")
+
+[node name="Control" type="Control" parent="."]
+layout_direction = 1
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -33.0
+offset_right = 25.0
+offset_bottom = 33.0
+grow_vertical = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Control"]
+position = Vector2(0, 7.62939e-06)
+scale = Vector2(1.0187, 0.99553)
 sprite_frames = ExtResource("1_6a2dd")
 animation = &"Default"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-8, 0)
-shape = SubResource("CapsuleShape2D_g7h43")
+frame_progress = 0.739454
+centered = false
