@@ -1,35 +1,67 @@
-[gd_scene load_steps=4 format=3 uid="uid://djjil5hpl8adi"]
+[gd_scene load_steps=5 format=3 uid="uid://djjil5hpl8adi"]
 
 [ext_resource type="SpriteFrames" uid="uid://5iar333b51ri" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierSpriteFrames.tres" id="1_6a2dd"]
 [ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Player/character.gd" id="1_41imp"]
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Projectiles/BulletSource.gd" id="2_tgm25"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7h43"]
-radius = 15.0
+radius = 9.145
 height = 66.0
 
 [node name="Character" type="CharacterBody2D"]
 floor_stop_on_slope = false
 script = ExtResource("1_41imp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 30)
 shape = SubResource("CapsuleShape2D_g7h43")
+
+[node name="CollisionShapeProne" type="CollisionShape2D" parent="."]
+position = Vector2(0, 51.335)
+scale = Vector2(1.365, 0.375)
+shape = SubResource("CapsuleShape2D_g7h43")
+disabled = true
+
+[node name="RightHandSources" type="Node2D" parent="."]
+
+[node name="RightStandingBulletSource" type="Node2D" parent="RightHandSources"]
+position = Vector2(34, 14)
+script = ExtResource("2_tgm25")
+
+[node name="RightProneBulletSource" type="Node2D" parent="RightHandSources"]
+position = Vector2(40, 54)
+script = ExtResource("2_tgm25")
+
+[node name="LeftHandSources" type="Node2D" parent="."]
+
+[node name="LeftStandingBulletSource" type="Node2D" parent="LeftHandSources"]
+position = Vector2(-35, 14)
+script = ExtResource("2_tgm25")
+left = true
+
+[node name="LeftProneBulletSource" type="Node2D" parent="LeftHandSources"]
+position = Vector2(-41, 55)
+script = ExtResource("2_tgm25")
+left = true
 
 [node name="Control" type="Control" parent="."]
 layout_direction = 1
 layout_mode = 3
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -15.0
-offset_top = -33.0
-offset_right = 25.0
-offset_bottom = 33.0
+grow_horizontal = 2
 grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Control"]
-position = Vector2(0, 7.62939e-06)
-scale = Vector2(1.0187, 0.99553)
 sprite_frames = ExtResource("1_6a2dd")
 animation = &"Default"
-frame_progress = 0.739454
-centered = false
+
+[connection signal="prone_left_shooting" from="." to="LeftHandSources/LeftProneBulletSource" method="_fire" binds= [false]]
+[connection signal="prone_right_shooting" from="." to="RightHandSources/RightProneBulletSource" method="_fire" binds= [true]]
+[connection signal="standing_left_shooting" from="." to="LeftHandSources/LeftStandingBulletSource" method="_fire" binds= [false]]
+[connection signal="standing_right_shooting" from="." to="RightHandSources/RightStandingBulletSource" method="_fire" binds= [true]]
