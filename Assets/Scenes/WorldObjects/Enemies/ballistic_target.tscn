@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm8wm62f48fjs"]
+
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Enemies/target.gd" id="1_0k5bt"]
+[ext_resource type="SpriteFrames" uid="uid://dtokhhs3l7lks" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_Sprites.tres" id="1_w4qoq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6sbpl"]
+radius = 7.0
+height = 66.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eklp4"]
+height = 56.0
+
+[node name="BallisticTarget" type="RigidBody2D"]
+disable_mode = 2
+collision_layer = 4
+mass = 100.0
+max_contacts_reported = 2
+contact_monitor = true
+can_sleep = false
+lock_rotation = true
+script = ExtResource("1_0k5bt")
+health_points = 10
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 32)
+shape = SubResource("CapsuleShape2D_6sbpl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("1_w4qoq")
+animation = &"Idle"
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="HurtBox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-3, 27)
+shape = SubResource("CapsuleShape2D_eklp4")
+
+[connection signal="died" from="." to="Area2D/HurtBox" method="queue_free"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]

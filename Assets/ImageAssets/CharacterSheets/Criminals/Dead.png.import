@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chdm6xaa74uf7"
-path="res://.godot/imported/Dead.png-9256c11a4b55b32a402ed186d4d6f85f.ctex"
+uid="uid://dni432gxsdcck"
+path="res://.godot/imported/Dead.png-e6bcb61577e4344412c77633d321c5c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Dead.png"
-dest_files=["res://.godot/imported/Dead.png-9256c11a4b55b32a402ed186d4d6f85f.ctex"]
+source_file="res://Assets/ImageAssets/CharacterSheets/Criminals/Dead.png"
+dest_files=["res://.godot/imported/Dead.png-e6bcb61577e4344412c77633d321c5c2.ctex"]
 
 [params]
 

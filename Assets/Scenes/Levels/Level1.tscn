@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/character.tscn" id="2_6osjs"]
 [ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/platform_3x.tscn" id="2_t51e7"]
-[ext_resource type="PackedScene" uid="uid://cm8wm62f48fjs" path="res://Assets/Scenes/WorldObjects/Enemies/practice_target.tscn" id="3_x8v2o"]
+[ext_resource type="PackedScene" uid="uid://cm8wm62f48fjs" path="res://Assets/Scenes/WorldObjects/Enemies/ballistic_target.tscn" id="3_x8v2o"]
 
 [node name="Node" type="Node"]
 
@@ -31,5 +31,5 @@ position = Vector2(-80, 457)
 [node name="Character" parent="." instance=ExtResource("2_6osjs")]
 position = Vector2(228, 518)
 
-[node name="PracticeTarget" parent="." instance=ExtResource("3_x8v2o")]
-position = Vector2(660, 519)
+[node name="BallisticTarget" parent="." instance=ExtResource("3_x8v2o")]
+position = Vector2(594.982, 517)

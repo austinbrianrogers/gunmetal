@@ -8,13 +8,13 @@
 [node name="Projectile" type="RigidBody2D"]
 rotation = 1.5708
 disable_mode = 2
-collision_layer = 6
-collision_mask = 6
-mass = 0.04
-inertia = 0.01
+collision_layer = 2
+collision_mask = 8
+mass = 0.05
 gravity_scale = 0.0
-continuous_cd = 2
-max_contacts_reported = 1
+max_contacts_reported = 6
+contact_monitor = true
+can_sleep = false
 lock_rotation = true
 script = ExtResource("1_tsy6s")
 
@@ -22,6 +22,8 @@ script = ExtResource("1_tsy6s")
 texture = ExtResource("2_rxbg2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.005)
-scale = Vector2(0.235, 0.54)
+light_mask = 6
+visibility_layer = 6
+position = Vector2(0, 11.655)
+scale = Vector2(0.175, 2.295)
 shape = SubResource("CapsuleShape2D_d3ouq")
