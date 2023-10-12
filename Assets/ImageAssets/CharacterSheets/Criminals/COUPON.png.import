@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1ds6h00qi5n5"
-path="res://.godot/imported/ProneSoldier1.png-ea9a95119ea813142440d5f65c8fa716.ctex"
+uid="uid://c2rdwlh3ospan"
+path="res://.godot/imported/COUPON.png-2cb0a18b9b19372c4db8082bd6978dd7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneSoldier1.png"
-dest_files=["res://.godot/imported/ProneSoldier1.png-ea9a95119ea813142440d5f65c8fa716.ctex"]
+source_file="res://Assets/ImageAssets/CharacterSheets/Criminals/COUPON.png"
+dest_files=["res://.godot/imported/COUPON.png-2cb0a18b9b19372c4db8082bd6978dd7.ctex"]
 
 [params]
 

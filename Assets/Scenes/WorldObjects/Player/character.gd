@@ -1,5 +1,4 @@
 extends CharacterBody2D
-
 # compile time variables
 const GRAVITY = 1000
 const LEFT = -1
@@ -7,16 +6,18 @@ const RIGHT = 1
 const MAX_SPEED_HORIZONTAL = 400
 const MAX_SPEED_VERTICAL = 550
 const JUMP_DELAY = .5
-
-# runtime variables
-var screen_bound
-var gravity_enabled = true
-var prone = false
-var hitboxStateProne = false
+#Character node children
+const STANDING_HITBOX_INDEX = 0
+const PRONE_HITBOX_INDEX = 1
+const FIRE_RATE:float = .1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	screen_bound = get_viewport_rect().size
+	m_screen_bound = get_viewport_rect().size
+	m_animator = $Control.get_node("AnimatedSprite2D")
+	m_standing_hitbox = get_child(STANDING_HITBOX_INDEX) as CollisionShape2D
+	m_prone_hitbox = get_child(PRONE_HITBOX_INDEX) as CollisionShape2D
+	m_last_shot_timer = FIRE_RATE
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,11 +26,13 @@ func _process(delta):
 	var left = Input.is_action_pressed("move_left")
 	var right = Input.is_action_pressed("move_right")
 	var jump = Input.is_action_just_pressed("jump")
+	var shooting = Input.is_action_pressed("shoot")
 	var floored = is_on_floor()
 	var moving = false
-	prone = Input.is_action_pressed("prone")
-	#velocity first
-	if floored:
+	m_prone = Input.is_action_pressed("prone")
+	m_last_shot_timer += delta
+	#attacks first
+	if floored && !shooting:
 		#side movement
 		if right:
 			velocity.x = MAX_SPEED_HORIZONTAL
@@ -41,53 +44,103 @@ func _process(delta):
 			velocity.x = 0
 		#player jumped
 		if  jump:
-			if moving: velocity.y = -MAX_SPEED_VERTICAL 
-			else: velocity.y = -MAX_SPEED_VERTICAL * 1.2		
-		else: if prone:
-			velocity = Vector2.ZERO
-			_change_height_to_prone(true)
+			if moving: 
+				velocity.y = -MAX_SPEED_VERTICAL 
+			else: 
+				velocity.y = -MAX_SPEED_VERTICAL * 1.2		
+		else: if m_prone:
+				velocity = Vector2.ZERO
 	else:
 		#player jumping already
-		if prone: velocity.y = MAX_SPEED_VERTICAL * 2
+		if m_prone: velocity.y = MAX_SPEED_VERTICAL * 2
 	#screen limit
-	position = position.clamp(Vector2.ZERO, screen_bound)
-	#velocity dependent sprite flip
-	if velocity.x < 0:
-		$AnimatedSprite2D.flip_h = true
-	if velocity.x > 0:
-		$AnimatedSprite2D.flip_h = false
+	position = position.clamp(Vector2.ZERO, m_screen_bound)
+	#velocity dependent sprite flip only when moving
+	if _is_moving():
+		_flip_for_direction(_is_moving_left())
 	#animation handling
-	if floored && prone:
-		$AnimatedSprite2D.play("Prone")
-		$AnimatedSprite2D.stop();
+	if floored && m_prone:
+		if shooting:
+			m_animator.play("ProneShooting")
+			velocity = Vector2.ZERO
+		else: 
+			m_animator.play("Prone")
 		pass
 	else: if moving && floored:
-		$AnimatedSprite2D.play("Run")
+		m_animator.play("Run")
 	else: if floored:
-		$AnimatedSprite2D.play("Default")
+		if !shooting:
+			m_animator.play("Default")
+		else:
+			m_animator.play("Shooting")
+			velocity = Vector2.ZERO
 	else: 
-		$AnimatedSprite2D.play("Jump")
+		m_animator.play("Jump")
 		
-	if !prone:
-		_change_height_to_prone(false)	
-	pass
+	_set_prone_hitbox_enabled(m_prone)
+	if shooting && floored: _determine_projectiles()
 	
 func _physics_process(delta):
-	if gravity_enabled:
+	if m_gravity_enabled:
 		velocity.y += delta * GRAVITY
 		var motion = velocity * delta
 		move_and_slide()
 	pass
 	
-func _change_height_to_prone(enabled):
-	if enabled == hitboxStateProne:
-		pass
-	else:
-		if enabled:
-			$CollisionShape2D.global_rotation_degrees = 90
-		else:
-			$CollisionShape2D.global_rotation_degrees = 0
-			position.y -= 1 #give him a small bump to stand upright
-	hitboxStateProne = enabled
+func _set_prone_hitbox_enabled(enabled:bool):
+	(m_standing_hitbox as CollisionShape2D).set_disabled(enabled)
+	(m_prone_hitbox as CollisionShape2D).set_disabled(!enabled)
+	m_hitbox_state_prone = enabled
 	pass
 
+func _flip_for_direction(left:bool):
+	if left && !m_left_face:
+		m_left_face = true
+		$Control.scale = Vector2(LEFT, 1)
+	else: if !left && m_left_face:
+		m_left_face = false
+		$Control.scale = Vector2(RIGHT, 1)
+	pass
+
+func _determine_projectiles():
+	if(m_last_shot_timer > FIRE_RATE): 
+		m_last_shot_timer = 0
+		if m_hitbox_state_prone:
+			if m_left_face:
+				prone_left_shooting.emit()
+			else:
+				prone_right_shooting.emit()
+		else:
+			if m_left_face:
+				standing_left_shooting.emit()
+			else:
+				standing_right_shooting.emit()
+
+		if m_left_face: print("shoot left")
+		if !m_left_face: print("shoot right")
+		pass
+
+func _is_moving():
+	return velocity.x != 0
+
+func _is_moving_left():
+	return velocity.x < 0
+
+func _is_moving_right():
+	return velocity.x > 0
+	
+# runtime variables
+var m_screen_bound
+var m_gravity_enabled = true
+var m_prone = false
+var m_hitbox_state_prone = false
+var m_animator
+var m_left_face = false
+var m_standing_hitbox: CollisionShape2D
+var m_prone_hitbox: CollisionShape2D
+var m_last_shot_timer:float = 0
+#signals
+signal standing_right_shooting
+signal prone_right_shooting
+signal standing_left_shooting
+signal prone_left_shooting

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1ds6h00qi5n5"
-path="res://.godot/imported/ProneSoldier1.png-ea9a95119ea813142440d5f65c8fa716.ctex"
+uid="uid://de7kbyo2wxqbh"
+path="res://.godot/imported/Idle_2.png-dc944f28d01b30c79151a8e410c3c84b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/ProneSoldier1.png"
-dest_files=["res://.godot/imported/ProneSoldier1.png-ea9a95119ea813142440d5f65c8fa716.ctex"]
+source_file="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_3/Idle_2.png"
+dest_files=["res://.godot/imported/Idle_2.png-dc944f28d01b30c79151a8e410c3c84b.ctex"]
 
 [params]
 
