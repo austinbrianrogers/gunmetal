@@ -1,6 +1,5 @@
 extends CharacterBody2D
 # compile time variables
-const GRAVITY = 1000
 const LEFT = -1
 const RIGHT = 1
 const MAX_SPEED_HORIZONTAL = 400
@@ -82,8 +81,7 @@ func _process(delta):
 	
 func _physics_process(delta):
 	if m_gravity_enabled:
-		velocity.y += delta * GRAVITY
-		var motion = velocity * delta
+		velocity.y += delta * Maths.Gravity
 		move_and_slide()
 	pass
 	
