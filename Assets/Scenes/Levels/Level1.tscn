@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cn02mlwcmyj60"]
 
-[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/character.tscn" id="2_6osjs"]
-[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/platform_3x.tscn" id="2_t51e7"]
+[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/Character.tscn" id="2_6osjs"]
+[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/Platform_3x.tscn" id="2_t51e7"]
 [ext_resource type="PackedScene" uid="uid://cm8wm62f48fjs" path="res://Assets/Scenes/WorldObjects/Enemies/Raider.tscn" id="4_t05vs"]
 
 [node name="Node" type="Node"]
@@ -34,3 +34,5 @@ position = Vector2(228, 518)
 [node name="Raider" parent="." instance=ExtResource("4_t05vs")]
 position = Vector2(698, 496)
 patrol_radius = 100.0
+wait_time_between_attacks = 2.0
+attacks_between_charge = 2

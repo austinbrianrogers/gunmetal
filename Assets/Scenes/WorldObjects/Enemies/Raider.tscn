@@ -39,3 +39,4 @@ position = Vector2(-3, 27)
 shape = SubResource("CapsuleShape2D_eklp4")
 
 [connection signal="died" from="." to="Area2D/HurtBox" method="queue_free"]
+[connection signal="body_entered" from="Area2D" to="." method="_hit"]
