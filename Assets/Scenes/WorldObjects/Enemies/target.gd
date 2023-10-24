@@ -16,10 +16,15 @@ func _process(_delta):
 	else:
 		if (!$AnimatedSprite2D.is_playing()):
 			_clean_up()
+	
+	if _is_moving_left() && !m_left_face:
+		_turn_around()
+	else: if _is_moving_right() && m_left_face:
+		_turn_around()
 
 func _on_body_entered(body):
 	if(_is_dead()): pass
-
+#this is wrong, you need to code out the layer dependance and move it to the extensions
 	print("Ouch!")
 	if body.get_collision_layer() == 2:
 		$AnimatedSprite2D.play("Hit")
@@ -44,13 +49,6 @@ func _clean_up():
 
 func _is_dead():
 	return m_time_of_death != ALIVE
-
-func _facing_left():
-	if scale.x < 0:
-		print("FACING LEFT, CAPTAIN")
-	if scale.x > 0:
-		print("FACING RIGHT, DICK")
-	return scale.x < 0
 	
 func _turn_around():
 	m_left_face = !m_left_face
@@ -59,8 +57,14 @@ func _turn_around():
 It turns out that scale is always relative. Always. So if you turn the character around using scale -1,
 you don't set it +1 to return to normal. You set the scale as -1 again._add_constant_central_force_add_constant_central_force
 """
-func _moving():
+func _is_moving():
 	return velocity.x != 0
+
+func _is_moving_left():
+	return velocity.x < 0
+
+func _is_moving_right():
+	return velocity.x > 0
 	
 
 
@@ -80,5 +84,9 @@ enum E_TARGET_STATE {
 	DEAD,
 	ATTACKING,
 	HIDING,
-	WAITING
+	WAITING,
+	HIT,
+	CHARGING,
+	PLAYER,
+	IDLE,
 }

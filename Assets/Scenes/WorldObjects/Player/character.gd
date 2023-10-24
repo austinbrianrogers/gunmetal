@@ -1,7 +1,5 @@
-extends CharacterBody2D
+extends "res://Assets/Scenes/WorldObjects/Enemies/Target.gd"
 # compile time variables
-const LEFT = -1
-const RIGHT = 1
 const MAX_SPEED_HORIZONTAL = 400
 const MAX_SPEED_VERTICAL = 550
 const JUMP_DELAY = .5
@@ -133,7 +131,6 @@ var m_gravity_enabled = true
 var m_prone = false
 var m_hitbox_state_prone = false
 var m_animator
-var m_left_face = false
 var m_standing_hitbox: CollisionShape2D
 var m_prone_hitbox: CollisionShape2D
 var m_last_shot_timer:float = 0
