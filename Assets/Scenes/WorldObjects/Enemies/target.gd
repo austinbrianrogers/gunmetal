@@ -6,7 +6,6 @@ const ALIVE = -1
 const LEFT = -1
 const RIGHT = 1
 func _ready():
-	$AnimatedSprite2D.play("Idle")
 	m_current_health =  health_points
 
 func _process(_delta):
@@ -65,9 +64,9 @@ func _is_moving_left():
 
 func _is_moving_right():
 	return velocity.x > 0
-	
 
-
+func _animating():
+	return $AnimatedSprite2D.is_playing()
 #runtiume members
 var m_current_health
 var m_time_of_death = ALIVE #default

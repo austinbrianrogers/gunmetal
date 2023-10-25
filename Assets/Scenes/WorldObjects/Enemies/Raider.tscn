@@ -16,9 +16,11 @@ collision_layer = 4
 floor_stop_on_slope = false
 floor_constant_speed = true
 script = ExtResource("1_rtkdk")
-patrol_radius = 300.0
+patrol_radius = 200.0
 walk_speed = 50.0
 wait_time_between_moves = 2.0
+wait_time_between_attacks = 1.0
+attacks_between_charge = 2
 health_points = 10
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]

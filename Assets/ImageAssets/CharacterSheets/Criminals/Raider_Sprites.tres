@@ -306,7 +306,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yqfpv")
 }],
-"loop": true,
+"loop": false,
 "name": &"Reload",
 "speed": 5.0
 }, {
