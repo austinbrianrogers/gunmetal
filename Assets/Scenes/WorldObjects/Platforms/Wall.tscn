@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0ypwfbngpmm"]
+
+[ext_resource type="Texture2D" uid="uid://dau170dmlcn4l" path="res://Assets/ImageAssets/World/Earth/PlainEarth.png" id="1_l6vao"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbw4b"]
+size = Vector2(64, 64)
+
+[node name="WallScene" type="Node2D"]
+position = Vector2(32, -32)
+
+[node name="Wall" type="RigidBody2D" parent="."]
+can_sleep = false
+lock_rotation = true
+freeze = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Wall"]
+texture = ExtResource("1_l6vao")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+shape = SubResource("RectangleShape2D_jbw4b")

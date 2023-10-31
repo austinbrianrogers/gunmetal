@@ -5,10 +5,14 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/Target.gd"
 @export var wait_time_between_moves:float
 @export var wait_time_between_attacks:float
 @export var attacks_between_charge:int
+@export var patrol_start_left:bool
 func _ready():
 	m_current_health =  health_points
-	_get_origin()
-	_choose_destination()
+	var face = 1
+	if patrol_start_left:
+		face *= -1
+	var initial_vector = Vector2(patrol_radius * face, 0)
+	_set_destination_update_origin(position + initial_vector)
 	_charge()
 
 func _physics_process(delta):
@@ -20,8 +24,10 @@ func _process(delta):
 		E_TARGET_STATE.PATROLLING:
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
-		E_TARGET_STATE.IDLE:
-			_choose_next()
+			if $RayCast2D.is_colliding():
+				print("WHAM")
+				_turn_around()
+				_halt(E_TARGET_STATE.HALTED)
 		#E_TARGET_STATE.ATTACKING:
 		#E_TARGET_STATE.CHARGING:
 		#E_TARGET_STATE.HIT:
@@ -29,15 +35,20 @@ func _process(delta):
 			if !_animating():
 				print("State Complete, moving on.")
 				_choose_next()
-	
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
+
+func _nudge(left:bool):
+	var dir = 1;
+	if left: dir = -1
+	position += ($CollisionShape2D.get_node("Node2D").transform.width) * dir
 
 func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
 	await get_tree().create_timer(wait_time_between_moves).timeout
-	_turn_around()
+	if((_destined_left() && !m_left_face)) || (!_destined_left && m_left_face):
+		_turn_around()
 	print("Starting patrol")
 	_go()
 
@@ -125,32 +136,24 @@ func _hit(body):
 	_on_body_entered(body)#super
 	_halt(E_TARGET_STATE.HIT)
 	_register_hit(body)
-	pass
 
 func _register_hit(body):
 	m_last_hit_vector = body.linear_velocity
 	_return_fire()
 
-func _get_origin():
+func _update_origin():
 	m_origin = position
 
 func _choose_destination():
-	var distance
-	if m_first_move:
-		distance = patrol_radius  / 2
-	else:
-		distance = patrol_radius 
-
-	if !m_left_face:
-		distance *= -1
-
-	_set_destination(Vector2(position.x + distance, position.y))
-	m_first_move = false
+	print("Before I chose my destination y origin is... ", m_origin)
 	print("My Position is...", position)
-	print("My Destination is.... ", m_destination)
+	_set_destination_update_origin(m_origin)
 
-func _set_destination(destination:Vector2):
+func _set_destination_update_origin(destination:Vector2):
 	m_destination = destination
+	print("My Destination is.... ", m_destination)
+	_update_origin()
+	print("My origin is now... ", m_origin)
 
 func _reached_destination():
 	var vector = position - m_destination
@@ -161,9 +164,11 @@ func _reached_destination():
 	else:
 		return false
 
+func _destined_left():
+	return (m_destination - position).x < 0
+
 #runtime
 var m_origin:Vector2
-var m_first_move:bool
 var m_destination:Vector2
 var m_last_hit_vector:Vector2
 var m_attack_vector:Vector2
