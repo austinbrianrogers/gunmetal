@@ -8,6 +8,7 @@ const RIGHT = 1
 func _ready():
 	$AnimatedSprite2D.play("Idle")
 	m_current_health =  health_points
+	m_left_face = false
 
 func _process(_delta):
 	if !_is_dead():
@@ -65,9 +66,9 @@ func _is_moving_left():
 
 func _is_moving_right():
 	return velocity.x > 0
-	
 
-
+func _animating():
+	return $AnimatedSprite2D.is_playing()
 #runtiume members
 var m_current_health
 var m_time_of_death = ALIVE #default

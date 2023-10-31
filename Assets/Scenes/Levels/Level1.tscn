@@ -33,6 +33,3 @@ position = Vector2(228, 518)
 
 [node name="Raider" parent="." instance=ExtResource("4_t05vs")]
 position = Vector2(698, 496)
-patrol_radius = 100.0
-wait_time_between_attacks = 2.0
-attacks_between_charge = 2
