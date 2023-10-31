@@ -53,8 +53,7 @@ func _process(delta):
 	#screen limit
 	position = position.clamp(Vector2.ZERO, m_screen_bound)
 	#velocity dependent sprite flip only when moving
-	if _is_moving():
-		_flip_for_direction(_is_moving_left())
+		
 	#animation handling
 	if floored && m_prone:
 		if shooting:
@@ -89,15 +88,6 @@ func _set_prone_hitbox_enabled(enabled:bool):
 	m_hitbox_state_prone = enabled
 	pass
 
-func _flip_for_direction(left:bool):
-	if left && !m_left_face:
-		m_left_face = true
-		$Control.scale = Vector2(LEFT, 1)
-	else: if !left && m_left_face:
-		m_left_face = false
-		$Control.scale = Vector2(RIGHT, 1)
-	pass
-
 func _determine_projectiles():
 	if(m_last_shot_timer > FIRE_RATE): 
 		m_last_shot_timer = 0
@@ -115,15 +105,6 @@ func _determine_projectiles():
 		if m_left_face: print("shoot left")
 		if !m_left_face: print("shoot right")
 		pass
-
-func _is_moving():
-	return velocity.x != 0
-
-func _is_moving_left():
-	return velocity.x < 0
-
-func _is_moving_right():
-	return velocity.x > 0
 	
 # runtime variables
 var m_screen_bound

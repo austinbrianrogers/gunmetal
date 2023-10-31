@@ -6,7 +6,9 @@ const ALIVE = -1
 const LEFT = -1
 const RIGHT = 1
 func _ready():
+	$AnimatedSprite2D.play("Idle")
 	m_current_health =  health_points
+	m_left_face = false
 
 func _process(_delta):
 	if !_is_dead():

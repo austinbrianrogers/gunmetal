@@ -7,7 +7,6 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/Target.gd"
 @export var attacks_between_charge:int
 func _ready():
 	m_current_health =  health_points
-	_get_timers()
 	_get_origin()
 	_choose_destination()
 	_charge()
@@ -37,7 +36,7 @@ func _process(delta):
 func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
-	await m_move_timer
+	await get_tree().create_timer(wait_time_between_moves).timeout
 	_turn_around()
 	print("Starting patrol")
 	_go()
@@ -45,7 +44,7 @@ func _start_patrol():
 func _continue_patrol():
 	print("On the move.")
 	m_target_state = E_TARGET_STATE.PATROLLING
-	await m_move_timer
+	await get_tree().create_timer(wait_time_between_moves).timeout
 	print("Continuing patrol")
 	_go()
 	
@@ -92,7 +91,7 @@ func _attack():
 		_charge()
 	else:
 		print("Fire!")
-		await m_attack_timer
+		await get_tree().create_timer(wait_time_between_attacks).timeout
 		$AnimatedSprite2D.play("Shoot")
 		m_target_state = E_TARGET_STATE.ATTACKING
 		m_current_charge -= 1
@@ -161,11 +160,6 @@ func _reached_destination():
 		return true
 	else:
 		return false
-
-func _get_timers():
-	var root = get_tree()
-	m_attack_timer = root.create_timer(wait_time_between_attacks)
-	m_move_timer = root.create_timer(wait_time_between_moves)
 
 #runtime
 var m_origin:Vector2
