@@ -20,7 +20,6 @@ func _process(_delta):
 
 func _physics_process(_delta):
 	if _is_moving_left() && !m_left_face:
-		print("flibidy")
 		_turn_around()
 	else: if _is_moving_right() && m_left_face:
 		_turn_around()
