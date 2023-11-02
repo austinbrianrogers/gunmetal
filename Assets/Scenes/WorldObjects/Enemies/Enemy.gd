@@ -102,10 +102,9 @@ func _attack():
 	if m_current_charge <= 0:
 		_charge()
 	else:
-		print("Fire!")
-		await get_tree().create_timer(wait_time_between_attacks).timeout
-		$AnimatedSprite2D.play("Shoot")
 		m_target_state = E_TARGET_STATE.ATTACKING
+		print("Fire!")
+		$AnimatedSprite2D.play("Shoot")
 		m_current_charge -= 1
 
 func _charge():
