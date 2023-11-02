@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cm8wm62f48fjs"]
 
-[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Enemies/Enemy.gd" id="1_rtkdk"]
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Enemies/enemy.gd" id="1_rtkdk"]
 [ext_resource type="SpriteFrames" uid="uid://dtokhhs3l7lks" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_Sprites.tres" id="1_w4qoq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6sbpl"]
@@ -13,10 +13,11 @@ height = 56.0
 [node name="Raider" type="CharacterBody2D"]
 disable_mode = 2
 collision_layer = 4
+collision_mask = 48
 floor_stop_on_slope = false
 floor_constant_speed = true
-platform_floor_layers = 4278190081
-platform_wall_layers = 1
+platform_floor_layers = 4278190096
+platform_wall_layers = 32
 script = ExtResource("1_rtkdk")
 patrol_radius = 200.0
 walk_speed = 50.0
@@ -46,6 +47,7 @@ shape = SubResource("CapsuleShape2D_eklp4")
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(5, 27)
 target_position = Vector2(25, 0)
+collision_mask = 48
 
 [connection signal="died" from="." to="Area2D/HurtBox" method="queue_free"]
 [connection signal="body_entered" from="Area2D" to="." method="_hit"]

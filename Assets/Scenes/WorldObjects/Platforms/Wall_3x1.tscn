@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://biobjs1qx7d0n"]
 
-[ext_resource type="PackedScene" uid="uid://b0ypwfbngpmm" path="res://Assets/Scenes/WorldObjects/Platforms/Wall.tscn" id="1_ii7g2"]
+[ext_resource type="PackedScene" uid="uid://b0ypwfbngpmm" path="res://Assets/Scenes/WorldObjects/Platforms/wall.tscn" id="1_ii7g2"]
 
 [node name="Wall_3x1" type="Node2D"]
 

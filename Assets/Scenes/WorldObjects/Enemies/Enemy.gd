@@ -1,4 +1,4 @@
-extends "res://Assets/Scenes/WorldObjects/Enemies/Target.gd"
+extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 #compile
 @export var patrol_radius:float
 @export var walk_speed:float
@@ -18,6 +18,7 @@ func _ready():
 func _physics_process(delta):
 	velocity.y += delta * Maths.Gravity
 	move_and_slide()
+	super(delta)
 
 func _process(delta):
 	match m_target_state:

@@ -4,10 +4,13 @@ namespace Gunmetal.Util
     {
         public enum LayerID
         {
-            World = 1,
-            PlayerHitbox = 2,
+            PlayerHitbox = 1,
+            PlayerHurtbox = 2,
             EnemyHitbox = 3,
             EnemyHurtbox = 4,
+            Floors = 5,
+            Walls = 6,
+            Projectile = 7,
         }
     }
 }
