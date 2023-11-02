@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dngw2sk80c6d7"
-path="res://.godot/imported/earthblock_16.png-d515b4751462ff9d13f1234ec4ba72e1.ctex"
+uid="uid://dau170dmlcn4l"
+path="res://.godot/imported/PlainEarth.png-ced37731cdbaae5bc68d15949e3af4ef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ImageAssets/World/earthblock_16.png"
-dest_files=["res://.godot/imported/earthblock_16.png-d515b4751462ff9d13f1234ec4ba72e1.ctex"]
+source_file="res://Assets/ImageAssets/World/Earth/PlainEarth.png"
+dest_files=["res://.godot/imported/PlainEarth.png-ced37731cdbaae5bc68d15949e3af4ef.ctex"]
 
 [params]
 
