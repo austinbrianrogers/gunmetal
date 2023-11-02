@@ -38,6 +38,7 @@ up_direction = Vector2(0, 1)
 [node name="Raider" parent="." instance=ExtResource("4_t05vs")]
 position = Vector2(849, -129)
 up_direction = Vector2(0, 1)
+patrol_radius = 100.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, -324)

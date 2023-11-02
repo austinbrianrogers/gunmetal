@@ -25,8 +25,7 @@ func _process(delta):
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
 			if $RayCast2D.is_colliding():
-				print("WHAM")
-				_turn_around()
+				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
 		#E_TARGET_STATE.ATTACKING:
 		#E_TARGET_STATE.CHARGING:
@@ -64,6 +63,7 @@ func _go():
 	vector = vector.normalized()
 	velocity.x = vector.x * walk_speed
 	$AnimatedSprite2D.play("Walk")
+	$RayCast2D.enabled = true
 
 func _halt(reason):
 	print("Stopping")
@@ -145,15 +145,14 @@ func _update_origin():
 	m_origin = position
 
 func _choose_destination():
-	print("Before I chose my destination y origin is... ", m_origin)
-	print("My Position is...", position)
-	_set_destination_update_origin(m_origin)
+	var face = 1
+	if (_is_left_of(m_origin)):
+		face = -1
+	_set_destination_update_origin(Vector2(position + Vector2(patrol_radius * face, 0)))
 
 func _set_destination_update_origin(destination:Vector2):
 	m_destination = destination
-	print("My Destination is.... ", m_destination)
 	_update_origin()
-	print("My origin is now... ", m_origin)
 
 func _reached_destination():
 	var vector = position - m_destination
@@ -166,6 +165,12 @@ func _reached_destination():
 
 func _destined_left():
 	return (m_destination - position).x < 0
+
+func _set_face_detection_enabled(enabled:bool):
+	$RayCast2D.enabled = enabled
+
+func _is_left_of(pos:Vector2):
+	return (pos - position).x < 0
 
 #runtime
 var m_origin:Vector2

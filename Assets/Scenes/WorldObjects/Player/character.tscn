@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://djjil5hpl8adi"]
 
 [ext_resource type="SpriteFrames" uid="uid://5iar333b51ri" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierSpriteFrames.tres" id="1_6a2dd"]
-[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Player/character.gd" id="1_41imp"]
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Player/Character.gd" id="1_m2mif"]
 [ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Projectiles/BulletSource.gd" id="2_tgm25"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7h43"]
@@ -15,7 +15,7 @@ floor_stop_on_slope = false
 floor_constant_speed = true
 platform_floor_layers = 4278190081
 platform_wall_layers = 1
-script = ExtResource("1_41imp")
+script = ExtResource("1_m2mif")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -34)
