@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://cn02mlwcmyj60"]
 
-[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/Character.tscn" id="2_6osjs"]
-[ext_resource type="PackedScene" uid="uid://gn40vs4g08t4" path="res://Assets/Scenes/WorldObjects/Platforms/Wall_3x_Top.tscn" id="2_bdttj"]
-[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/Platform_3x.tscn" id="2_t51e7"]
-[ext_resource type="PackedScene" uid="uid://cm8wm62f48fjs" path="res://Assets/Scenes/WorldObjects/Enemies/Raider.tscn" id="4_t05vs"]
+[ext_resource type="PackedScene" uid="uid://gn40vs4g08t4" path="res://Assets/Scenes/WorldObjects/Platforms/wall_3x_Top.tscn" id="2_bdttj"]
+[ext_resource type="PackedScene" uid="uid://bkmyjer32pvpw" path="res://Assets/Scenes/WorldObjects/Platforms/platform_3x.tscn" id="2_t51e7"]
+[ext_resource type="PackedScene" uid="uid://djjil5hpl8adi" path="res://Assets/Scenes/WorldObjects/Player/character.tscn" id="4_hviw2"]
+[ext_resource type="PackedScene" uid="uid://cm8wm62f48fjs" path="res://Assets/Scenes/WorldObjects/Enemies/raider.tscn" id="4_t05vs"]
 
 [node name="Node" type="Node"]
 
 [node name="Platform3X" parent="." instance=ExtResource("2_t51e7")]
-position = Vector2(2, 0)
+position = Vector2(-28, 648)
 
 [node name="Platform3X2" parent="Platform3X" instance=ExtResource("2_t51e7")]
 position = Vector2(192, 0)
@@ -31,14 +31,12 @@ position = Vector2(192, 0)
 [node name="Platform3X" parent="Platform3X/Platform3X2/Wall_3xTop/Platform3X/Wall_3xTop/Platform3X/Platform3X" instance=ExtResource("2_t51e7")]
 position = Vector2(192, 0)
 
-[node name="Character" parent="." instance=ExtResource("2_6osjs")]
-position = Vector2(271, -259)
-up_direction = Vector2(0, 1)
-
 [node name="Raider" parent="." instance=ExtResource("4_t05vs")]
-position = Vector2(849, -129)
+position = Vector2(794, 510)
 up_direction = Vector2(0, 1)
-patrol_radius = 100.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, -324)
+position = Vector2(581, 326)
+
+[node name="Character" parent="." instance=ExtResource("4_hviw2")]
+position = Vector2(205, 572)

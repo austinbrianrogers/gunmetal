@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bkmyjer32pvpw"]
 
-[ext_resource type="PackedScene" uid="uid://60wwnf5b306f" path="res://Assets/Scenes/WorldObjects/Platforms/Platform_scene.tscn" id="1_3xfl0"]
+[ext_resource type="PackedScene" uid="uid://60wwnf5b306f" path="res://Assets/Scenes/WorldObjects/Platforms/platform_scene.tscn" id="1_3xfl0"]
 
 [node name="Platform3X" type="Node2D"]
 

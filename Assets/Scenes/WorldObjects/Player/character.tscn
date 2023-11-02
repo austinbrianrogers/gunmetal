@@ -1,55 +1,43 @@
 [gd_scene load_steps=5 format=3 uid="uid://djjil5hpl8adi"]
 
-[ext_resource type="SpriteFrames" uid="uid://5iar333b51ri" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierSpriteFrames.tres" id="1_6a2dd"]
-[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Player/Character.gd" id="1_m2mif"]
-[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Projectiles/BulletSource.gd" id="2_tgm25"]
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Player/character.gd" id="1_7i7u6"]
+[ext_resource type="Script" path="res://Assets/Scenes/WorldObjects/Projectiles/bullet_source.gd" id="1_ydi5e"]
+[ext_resource type="SpriteFrames" uid="uid://5iar333b51ri" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/SoldierSprites(Cut)/SoldierSpriteFrames.tres" id="2_au15a"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7h43"]
 radius = 9.145
 height = 66.0
 
 [node name="Character" type="CharacterBody2D"]
-collision_layer = 2147483650
-collision_mask = 9
+disable_mode = 2
+collision_layer = 2147483649
+collision_mask = 48
 floor_stop_on_slope = false
 floor_constant_speed = true
-platform_floor_layers = 4278190081
-platform_wall_layers = 1
-script = ExtResource("1_m2mif")
+platform_floor_layers = 4278190096
+platform_wall_layers = 32
+script = ExtResource("1_7i7u6")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, -34)
+position = Vector2(0, -32.87)
 shape = SubResource("CapsuleShape2D_g7h43")
 
 [node name="CollisionShapeProne" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12.665)
+position = Vector2(0, -12.675)
 scale = Vector2(1.365, 0.375)
 shape = SubResource("CapsuleShape2D_g7h43")
 disabled = true
 
-[node name="RightHandSources" type="Node2D" parent="."]
+[node name="BulletSources" type="Node2D" parent="."]
 position = Vector2(0, -64)
 
-[node name="RightStandingBulletSource" type="Node2D" parent="RightHandSources"]
+[node name="StandingBulletSource" type="Node2D" parent="BulletSources"]
 position = Vector2(34, 14)
-script = ExtResource("2_tgm25")
+script = ExtResource("1_ydi5e")
 
-[node name="RightProneBulletSource" type="Node2D" parent="RightHandSources"]
+[node name="ProneBulletSource" type="Node2D" parent="BulletSources"]
 position = Vector2(40, 54)
-script = ExtResource("2_tgm25")
-
-[node name="LeftHandSources" type="Node2D" parent="."]
-position = Vector2(0, -64)
-
-[node name="LeftStandingBulletSource" type="Node2D" parent="LeftHandSources"]
-position = Vector2(-35, 14)
-script = ExtResource("2_tgm25")
-left = true
-
-[node name="LeftProneBulletSource" type="Node2D" parent="LeftHandSources"]
-position = Vector2(-41, 55)
-script = ExtResource("2_tgm25")
-left = true
+script = ExtResource("1_ydi5e")
 
 [node name="Control" type="Control" parent="."]
 layout_direction = 1
@@ -67,10 +55,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Control"]
-sprite_frames = ExtResource("1_6a2dd")
+sprite_frames = ExtResource("2_au15a")
 animation = &"Default"
 
-[connection signal="prone_left_shooting" from="." to="LeftHandSources/LeftProneBulletSource" method="_fire" binds= [false]]
-[connection signal="prone_right_shooting" from="." to="RightHandSources/RightProneBulletSource" method="_fire" binds= [true]]
-[connection signal="standing_left_shooting" from="." to="LeftHandSources/LeftStandingBulletSource" method="_fire" binds= [false]]
-[connection signal="standing_right_shooting" from="." to="RightHandSources/RightStandingBulletSource" method="_fire" binds= [true]]
+[connection signal="prone_left_shooting" from="." to="BulletSources/ProneBulletSource" method="_fire" binds= [false]]
+[connection signal="prone_right_shooting" from="." to="BulletSources/ProneBulletSource" method="_fire" binds= [true]]
+[connection signal="standing_left_shooting" from="." to="BulletSources/StandingBulletSource" method="_fire" binds= [false]]
+[connection signal="standing_right_shooting" from="." to="BulletSources/StandingBulletSource" method="_fire" binds= [true]]

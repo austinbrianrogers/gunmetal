@@ -6,7 +6,6 @@ const DEFAULT_VELOCITY:int = 500
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	m_projectile = preload(PROJECTILE_SOURCE)
-	pass # Replace with function body.
 
 func _fire(right:bool):
 	var actual = DEFAULT_VELOCITY
@@ -17,6 +16,5 @@ func _fire(right:bool):
 	var root = get_tree().get_root()
 	bullet.reparent(root, true)
 	(bullet as RigidBody2D).add_constant_central_force(Vector2(actual, 0))
-	pass
 
 var m_projectile

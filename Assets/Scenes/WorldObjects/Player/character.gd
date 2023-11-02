@@ -1,4 +1,4 @@
-extends "res://Assets/Scenes/WorldObjects/Enemies/Target.gd"
+extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 # compile time variables
 const MAX_SPEED_HORIZONTAL = 400
 const MAX_SPEED_VERTICAL = 550
@@ -79,13 +79,12 @@ func _physics_process(delta):
 	if m_gravity_enabled:
 		velocity.y += delta * Maths.Gravity
 		move_and_slide()
-	pass
+	super(delta)
 	
 func _set_prone_hitbox_enabled(enabled:bool):
 	(m_standing_hitbox as CollisionShape2D).set_disabled(enabled)
 	(m_prone_hitbox as CollisionShape2D).set_disabled(!enabled)
 	m_hitbox_state_prone = enabled
-	pass
 
 func _determine_projectiles():
 	if(m_last_shot_timer > FIRE_RATE): 
@@ -103,7 +102,6 @@ func _determine_projectiles():
 
 		if m_left_face: print("shoot left")
 		if !m_left_face: print("shoot right")
-		pass
 	
 # runtime variables
 var m_screen_bound
