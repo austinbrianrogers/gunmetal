@@ -28,9 +28,10 @@ func _on_body_entered(body):
 	if(_is_dead()): pass
 #this is wrong, you need to code out the layer dependance and move it to the extensions
 	print("Ouch!")
-	if body.get_collision_layer() == 2:
-		$AnimatedSprite2D.play("Hit")
-		_add_to_health(-1)
+	match body.get_collision_layer():
+		Physics.Projectile:
+			$AnimatedSprite2D.play("Hit")
+			_add_to_health(-1)
 	#bullet can be deleted
 	body.queue_free()
 
