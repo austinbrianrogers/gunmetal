@@ -11,22 +11,20 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	_flip_for_direction(linear_velocity.x < 0)
 	m_runtime += delta
 	if(m_runtime > m_run_max):
-		print("bye")
 		queue_free()
 
-func _flip_for_direction(left:bool):
-	if left && !_is_facing_left():
-		m_left_face = true
-		scale = Vector2(LEFT, 1)
-	else: if !left && _is_facing_left():
-		m_left_face = false
-		scale = Vector2(RIGHT, 1)
+func _impact(body):
+	print("Body struck: ", body.get_collision_layer())
+	match body.get_collision_layer():
+		Physics.Wall:
+			_dismiss()
+		Physics.Floor:
+			_dismiss()
 
-func _is_facing_left():
-	return scale.x < 0
+func _dismiss():
+	queue_free()
 
 #runtime variables
 var m_left_face:bool = false

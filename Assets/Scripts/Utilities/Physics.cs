@@ -1,16 +1,16 @@
+using Godot;
+using System;
 namespace Gunmetal.Util
 {
-    public partial class Phyusics
+    public partial class Physics : Node
     {
-        public enum LayerID
-        {
-            PlayerHitbox = 1,
-            PlayerHurtbox = 2,
-            EnemyHitbox = 3,
-            EnemyHurtbox = 4,
-            Floors = 5,
-            Walls = 6,
-            Projectile = 7,
-        }
+        public override void _Ready(){}
+        public int PlayerHitbox = 1; 
+        public int PlayerHurtbox = 2;
+        public int EnemyHitbox = 3; 
+        public int EnemyHurtbox = 4; 
+        public int Floor = 5;
+        public int Wall =  6;
+        public int Projectile = 7;
     }
 }

@@ -17,6 +17,7 @@ floor_constant_speed = true
 platform_floor_layers = 4278190096
 platform_wall_layers = 32
 script = ExtResource("1_7i7u6")
+health_points = null
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -32.87)
