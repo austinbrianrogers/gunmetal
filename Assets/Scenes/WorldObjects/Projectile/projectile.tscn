@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dbptpory3spfw" path="res://Assets/ImageAssets/Effects/Projectiles/2.png" id="2_rxbg2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d3ouq"]
+radius = 5.71453
 
 [node name="Projectile" type="RigidBody2D"]
 rotation = 1.5708

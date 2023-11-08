@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=51 format=3 uid="uid://5iar333b51ri"]
+[gd_resource type="SpriteFrames" load_steps=46 format=3 uid="uid://5iar333b51ri"]
 
 [ext_resource type="Texture2D" uid="uid://b57ohfihk0i2n" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/Soldier_1/Idle.png" id="1_60owj"]
 [ext_resource type="Texture2D" uid="uid://cted8g45dvkf4" path="res://Assets/ImageAssets/CharacterSheets/SoldierSprites/Soldier_1/Jump.png" id="2_oxjfo"]
@@ -35,14 +35,6 @@ region = Rect2(640, 0, 128, 128)
 atlas = ExtResource("1_60owj")
 region = Rect2(768, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_enjpb"]
-atlas = ExtResource("2_oxjfo")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_oqlgc"]
-atlas = ExtResource("2_oxjfo")
-region = Rect2(128, 0, 128, 128)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_nsxsp"]
 atlas = ExtResource("2_oxjfo")
 region = Rect2(256, 0, 128, 128)
@@ -50,18 +42,6 @@ region = Rect2(256, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_sv4oa"]
 atlas = ExtResource("2_oxjfo")
 region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_206y5"]
-atlas = ExtResource("2_oxjfo")
-region = Rect2(512, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ejo7p"]
-atlas = ExtResource("2_oxjfo")
-region = Rect2(640, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0oq8a"]
-atlas = ExtResource("2_oxjfo")
-region = Rect2(768, 0, 128, 128)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eub6l"]
 load_path = "res://.godot/imported/ProneShooting.png-2f568b757829e5eddca6f4f22992c02c.ctex"
@@ -212,29 +192,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_enjpb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_oqlgc")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_nsxsp")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sv4oa")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_206y5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ejo7p")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0oq8a")
 }],
 "loop": true,
 "name": &"Jump",
-"speed": 3.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
