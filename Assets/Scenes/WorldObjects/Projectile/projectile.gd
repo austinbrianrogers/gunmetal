@@ -17,11 +17,11 @@ func _process(delta):
 
 func _impact(body):
 	print("Body struck: ", body.get_collision_layer())
-	match body.get_collision_layer():
-		Physics.Wall:
-			_dismiss()
-		Physics.Floor:
-			_dismiss()
+	var layers = body.get_collision_layer()
+	if layers & (1 << Physics.Wall):
+		_dismiss()
+	if layers & (1 << Physics.Floor):
+		_dismiss()
 
 func _dismiss():
 	queue_free()
