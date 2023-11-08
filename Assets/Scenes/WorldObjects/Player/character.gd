@@ -24,26 +24,21 @@ func _process(delta):
 	var jump = Input.is_action_just_pressed("jump")
 	var shooting = Input.is_action_pressed("shoot")
 	var floored = is_on_floor()
-	var moving = false
 	m_prone = Input.is_action_pressed("prone")
 	m_last_shot_timer += delta
 	#attacks first
 	if floored && !shooting:
 		#side movement
 		if right:
-			velocity.x = MAX_SPEED_HORIZONTAL
-			moving = true
+			_move_now(false)
 		else: if left: 
-			velocity.x = -MAX_SPEED_HORIZONTAL 
-			moving = true
+			_move_now(true)
 		else: if !left && !right: 
 			velocity.x = 0
+			m_moving = false
 		#player jumped
 		if  jump:
-			if moving: 
-				velocity.y = -MAX_SPEED_VERTICAL 
-			else: 
-				velocity.y = -MAX_SPEED_VERTICAL * 1.2		
+			_jump()	
 		else: if m_prone:
 				velocity = Vector2.ZERO
 	else:
@@ -61,7 +56,7 @@ func _process(delta):
 		else: 
 			m_animator.play("Prone")
 		pass
-	else: if moving && floored:
+	else: if m_moving && floored:
 		m_animator.play("Run")
 	else: if floored:
 		if !shooting:
@@ -69,11 +64,29 @@ func _process(delta):
 		else:
 			m_animator.play("Shooting")
 			velocity = Vector2.ZERO
-	else: 
-		m_animator.play("Jump")
-		
+
 	_set_prone_hitbox_enabled(m_prone)
 	if shooting && floored: _determine_projectiles()
+	
+func _jump():
+	if m_moving: 
+		velocity.y = -MAX_SPEED_VERTICAL 
+	else: 
+		velocity.y = -MAX_SPEED_VERTICAL * 1.2	
+
+func _move_now(left:bool):
+	if left:
+		velocity.x = -MAX_SPEED_HORIZONTAL 
+	else:
+		velocity.x = MAX_SPEED_HORIZONTAL
+	
+	m_moving = true;
+
+func _aerial_move(left:bool):
+	if left:
+		velocity.x = -MAX_SPEED_HORIZONTAL / 6.0
+	else:
+		velocity.x = MAX_SPEED_HORIZONTAL / 6.0
 	
 func _physics_process(delta):
 	if m_gravity_enabled:
@@ -108,6 +121,7 @@ var m_screen_bound
 var m_gravity_enabled = true
 var m_prone = false
 var m_hitbox_state_prone = false
+var m_moving = false
 var m_animator
 var m_standing_hitbox: CollisionShape2D
 var m_prone_hitbox: CollisionShape2D
