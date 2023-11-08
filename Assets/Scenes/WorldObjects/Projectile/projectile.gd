@@ -19,8 +19,10 @@ func _impact(body):
 	print("Body struck: ", body.get_collision_layer())
 	var layers = body.get_collision_layer()
 	if layers & (1 << Physics.Wall):
+		print("cum")
 		_dismiss()
 	if layers & (1 << Physics.Floor):
+		print("fuck")
 		_dismiss()
 
 func _dismiss():

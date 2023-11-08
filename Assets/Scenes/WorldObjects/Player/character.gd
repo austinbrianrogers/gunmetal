@@ -40,7 +40,7 @@ func _process(delta):
 		if  jump:
 			_jump()	
 		else: if m_prone:
-				velocity = Vector2.ZERO
+			velocity = Vector2.ZERO
 	else:
 		#player jumping already
 		if m_prone: velocity.y = MAX_SPEED_VERTICAL * 2
@@ -49,44 +49,66 @@ func _process(delta):
 	#velocity dependent sprite flip only when moving
 		
 	#animation handling
-	if floored && m_prone:
-		if shooting:
-			m_animator.play("ProneShooting")
-			velocity = Vector2.ZERO
-		else: 
-			m_animator.play("Prone")
-		pass
-	else: if m_moving && floored:
-		m_animator.play("Run")
-	else: if floored:
-		if !shooting:
-			m_animator.play("Default")
+	if floored:
+		if m_prone:
+			if shooting:
+				_shoot(true)
+			else: 
+				m_animator.play("Prone")
 		else:
-			m_animator.play("Shooting")
-			velocity = Vector2.ZERO
-
+			if shooting:
+				_shoot(false)
+			else: if _is_moving():
+				m_animator.play("Run")
+			else: 
+				m_animator.play("Default")
+	else:
+		_set_jump_frame()
+		if right:
+			_aerial_move(false)
+		else: if left: 
+			_aerial_move(true)
+	
 	_set_prone_hitbox_enabled(m_prone)
-	if shooting && floored: _determine_projectiles()
+
+func _shoot(prone:bool):
+	if prone:
+		m_animator.play("ProneShooting")
+	else: 
+		m_animator.play("Shooting")
+	
+	velocity = Vector2.ZERO
+	_determine_projectiles()
+
+func _set_jump_frame():
+	m_animator.play("Jump")
+	if velocity.y < 0:
+		m_animator.frame = 0;
+	if velocity.y > 0:
+		m_animator.frame = 1;
 	
 func _jump():
 	if m_moving: 
 		velocity.y = -MAX_SPEED_VERTICAL 
 	else: 
-		velocity.y = -MAX_SPEED_VERTICAL * 1.2	
+		velocity.y = -MAX_SPEED_VERTICAL * 1.2
 
 func _move_now(left:bool):
 	if left:
 		velocity.x = -MAX_SPEED_HORIZONTAL 
 	else:
 		velocity.x = MAX_SPEED_HORIZONTAL
-	
 	m_moving = true;
 
 func _aerial_move(left:bool):
+	if abs(velocity.x) != 0: #only do this if we are not already moving.
+		return
+
 	if left:
 		velocity.x = -MAX_SPEED_HORIZONTAL / 6.0
 	else:
 		velocity.x = MAX_SPEED_HORIZONTAL / 6.0
+	m_animator.play("Jump")
 	
 func _physics_process(delta):
 	if m_gravity_enabled:

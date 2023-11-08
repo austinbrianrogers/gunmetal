@@ -40,4 +40,3 @@ position = Vector2(581, 326)
 
 [node name="Character" parent="." instance=ExtResource("4_hviw2")]
 position = Vector2(205, 572)
-health_points = 0
