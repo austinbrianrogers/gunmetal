@@ -6,13 +6,16 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 @export var wait_time_between_attacks:float
 @export var attacks_between_charge:int
 @export var patrol_start_left:bool
+@export var search_radius:float
 func _ready():
 	m_current_health =  health_points
+	m_original_raycast_distance = $RayCast2D.scale.x
 	var face = 1
 	if patrol_start_left:
 		face *= -1
 	var initial_vector = Vector2(patrol_radius * face, 0)
 	_set_destination_update_origin(position + initial_vector)
+	_set_timers()
 	_charge()
 
 func _physics_process(delta):
@@ -25,7 +28,7 @@ func _process(delta):
 		E_TARGET_STATE.PATROLLING:
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
-			if $RayCast2D.is_colliding():
+			if _face_colliding_with_walls():
 				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
 		#E_TARGET_STATE.ATTACKING:
@@ -46,18 +49,14 @@ func _nudge(left:bool):
 func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
-	await get_tree().create_timer(wait_time_between_moves).timeout
-	if((_destined_left() && !m_left_face)) || (!_destined_left && m_left_face):
-		_turn_around()
+	m_move_timer.start()
 	print("Starting patrol")
-	_go()
 
 func _continue_patrol():
 	print("On the move.")
 	m_target_state = E_TARGET_STATE.PATROLLING
-	await get_tree().create_timer(wait_time_between_moves).timeout
+	m_move_timer.start()
 	print("Continuing patrol")
-	_go()
 	
 func _go():
 	var vector = m_destination - position
@@ -90,22 +89,26 @@ func _choose_next():
 		E_TARGET_STATE.PATROLLING:
 			pass
 		E_TARGET_STATE.ATTACKING:
-			_attack()
+			_start_attack()
 		E_TARGET_STATE.CHARGING:
 			_continue_patrol()
+		#E_TARGET_STATE.HIT:
+		#	_aim()
 		#E_TARGET_STATE.IDLE:
 		#E_TARGET_STATE.WAITING:
 		_:
 			_start_patrol()
 
-func _attack():
+func _start_attack():
 	if m_current_charge <= 0:
 		_charge()
-	else:
-		m_target_state = E_TARGET_STATE.ATTACKING
-		print("Fire!")
-		$AnimatedSprite2D.play("Shoot")
-		m_current_charge -= 1
+	m_attack_timer.start()
+
+func _attack():
+	m_target_state = E_TARGET_STATE.ATTACKING
+	print("Fire!")
+	$AnimatedSprite2D.play("Shoot")
+	m_current_charge -= 1
 
 func _charge():
 	print("Reloading!")
@@ -127,19 +130,22 @@ func _aim():
 	if m_attack_vector.x > 0:
 		if !m_left_face:
 			_turn_around()
-	else:
+	else: 
 		if m_left_face:
 			_turn_around()
-	_attack()
+	
+	_search()
 
 func _hit(body):
 	_on_body_entered(body)#super
-	_halt(E_TARGET_STATE.HIT)
 	_register_hit(body)
 
 func _register_hit(body):
+	_halt(E_TARGET_STATE.HIT)
+	m_move_timer.stop()
+	m_attack_timer.stop()
 	m_last_hit_vector = body.linear_velocity
-	_return_fire()
+	_add_to_health(-1)
 
 func _update_origin():
 	m_origin = position
@@ -172,6 +178,50 @@ func _set_face_detection_enabled(enabled:bool):
 func _is_left_of(pos:Vector2):
 	return (pos - position).x < 0
 
+func _set_timers():
+	m_move_timer = Timer.new()
+	m_move_timer.autostart = false
+	add_child(m_move_timer)
+	m_move_timer.wait_time = wait_time_between_moves
+	m_move_timer.connect("timeout", Callable(self, "_move_timer_complete"))
+
+	m_attack_timer = Timer.new()
+	m_attack_timer.autostart = false
+	add_child(m_attack_timer)
+	m_attack_timer.wait_time = wait_time_between_moves
+	m_attack_timer.connect("timeout", Callable(self, "_attack_timer_complete"))
+
+func _attack_timer_complete():
+	_attack()
+
+func _move_timer_complete():
+	_go()
+
+func _set_raycast_length(length:float):
+	$RayCast2D.scale.x = length
+
+func _search():
+	_set_raycast_length(search_radius)
+	_scan_for_player()
+
+func _end_search():
+	_set_raycast_length(m_original_raycast_distance)
+
+func _target_found():
+	_attack()
+
+func _target_lost():
+	_start_patrol()
+
+func _scan_for_player():
+	pass
+
+func _face_colliding_with_walls():
+	pass
+
+func _search_colliding_with_player():
+	pass
+
 #runtime
 var m_origin:Vector2
 var m_destination:Vector2
@@ -180,6 +230,7 @@ var m_attack_vector:Vector2
 var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
+var m_original_raycast_distance
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels
 
