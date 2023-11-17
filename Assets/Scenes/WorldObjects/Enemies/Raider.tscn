@@ -26,7 +26,7 @@ wait_time_between_attacks = 1.0
 attacks_between_charge = 2
 patrol_start_left = true
 search_radius = 400.0
-vertical_search_tolerance = 50.0
+vertical_search_tolerance = 75.0
 health_points = 10
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]

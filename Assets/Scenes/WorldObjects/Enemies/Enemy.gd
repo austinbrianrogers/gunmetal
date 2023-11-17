@@ -29,6 +29,8 @@ func _process(delta):
 		E_TARGET_STATE.PATROLLING:
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
+			if _find_player():
+				_halt(E_TARGET_STATE.ATTACKING)
 			if $CollisionCast.is_colliding():
 				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
@@ -51,13 +53,10 @@ func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	print("Starting patrol")
 
 func _continue_patrol():
-	print("On the move.")
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	print("Continuing patrol")
 	
 func _go():
 	var vector = m_destination - position
@@ -73,6 +72,8 @@ func _halt(reason):
 		E_TARGET_STATE.HIT:
 			$AnimatedSprite2D.play("Hit")
 			m_target_state = E_TARGET_STATE.HIT
+		E_TARGET_STATE.ATTACKING:
+			_return_fire()
 		#E_TARGET_STATE.HALTED:
 		#E_TARGET_STATE.WAITING:
 		_:	
@@ -202,21 +203,24 @@ func _move_timer_complete():
 	_go()
 
 func _find_player():
+	if !_facing_player():
+		return false
 	$CollisionCast.scale.x = search_radius
 	_set_face_detection_enabled(true)
+	var result = false
 	if $CollisionCast.is_colliding():
-		print("Hit a wall trying to find a player")
 		var point = $CollisionCast.get_collision_point()
 		var toPoint = point - position
 		var toPlayer = GameManager.player.position - position
 		_set_face_detection_enabled(false)
-		return toPoint.length() > toPlayer.length()
+		result = toPoint.length() > toPlayer.length()
 	else:
-		print("No wall hit, let's find the player.")
 		var playerInRange = (GameManager.player.position - position).length() < search_radius
 		var playerInVerticalTolerance = abs(GameManager.player.position.y - position.y) < vertical_search_tolerance
 		_set_face_detection_enabled(false)
-		return playerInRange && playerInVerticalTolerance
+		result =  playerInRange && playerInVerticalTolerance
+	$CollisionCast.scale.x = m_original_raycast_distance
+	return result
 
 
 func _target_found():
@@ -225,6 +229,11 @@ func _target_found():
 func _target_lost():
 	_start_patrol()
 
+func _facing_player():
+	if m_left_face:
+		return position.x > GameManager.player.position.x
+	else:
+		return position.x < GameManager.player.position.x
 
 #runtime
 var m_origin:Vector2
@@ -235,6 +244,7 @@ var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
 var m_original_raycast_distance
+var m_seen_player = false
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels
 
