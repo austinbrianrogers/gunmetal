@@ -15,6 +15,7 @@ func _ready():
 	m_standing_hitbox = get_child(STANDING_HITBOX_INDEX) as CollisionShape2D
 	m_prone_hitbox = get_child(PRONE_HITBOX_INDEX) as CollisionShape2D
 	m_last_shot_timer = FIRE_RATE
+	GameManager.player = self
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta): 
@@ -91,7 +92,7 @@ func _jump():
 	if m_moving: 
 		velocity.y = -MAX_SPEED_VERTICAL 
 	else: 
-		velocity.y = -MAX_SPEED_VERTICAL * 1.2
+		velocity.y = -MAX_SPEED_VERTICAL * 1.05
 
 func _move_now(left:bool):
 	if left:

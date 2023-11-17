@@ -25,6 +25,8 @@ wait_time_between_moves = 2.0
 wait_time_between_attacks = 1.0
 attacks_between_charge = 2
 patrol_start_left = true
+search_radius = 400.0
+vertical_search_tolerance = 50.0
 health_points = 10
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
@@ -44,7 +46,7 @@ collision_mask = 66
 position = Vector2(-3, 27)
 shape = SubResource("CapsuleShape2D_eklp4")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="CollisionCast" type="RayCast2D" parent="."]
 position = Vector2(5, 27)
 target_position = Vector2(25, 0)
 collision_mask = 48
