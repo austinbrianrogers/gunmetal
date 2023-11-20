@@ -10,7 +10,7 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 @export var vertical_search_tolerance:float
 func _ready():
 	m_current_health =  health_points
-	m_original_raycast_distance = $CollisionCast.scale.x
+	$PlayerSearch.scale.x = search_radius
 	var face = 1
 	if patrol_start_left:
 		face *= -1
@@ -29,6 +29,8 @@ func _process(delta):
 		E_TARGET_STATE.PATROLLING:
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
+			if _find_player():
+				_halt(E_TARGET_STATE.ATTACKING)
 			if $CollisionCast.is_colliding():
 				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
@@ -39,6 +41,8 @@ func _process(delta):
 			if !_animating():
 				print("State Complete, moving on.")
 				_choose_next()
+	if velocity.x != 0:
+		_correct_face()
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
 
@@ -51,13 +55,10 @@ func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	print("Starting patrol")
 
 func _continue_patrol():
-	print("On the move.")
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	print("Continuing patrol")
 	
 func _go():
 	var vector = m_destination - position
@@ -73,6 +74,8 @@ func _halt(reason):
 		E_TARGET_STATE.HIT:
 			$AnimatedSprite2D.play("Hit")
 			m_target_state = E_TARGET_STATE.HIT
+		E_TARGET_STATE.ATTACKING:
+			_return_fire()
 		#E_TARGET_STATE.HALTED:
 		#E_TARGET_STATE.WAITING:
 		_:	
@@ -125,6 +128,12 @@ func _retreat():
 
 func _chase():
 	pass
+
+func _correct_face():
+	if velocity.x > 0 && m_left_face:
+		_turn_around()
+	else: if velocity.x < 0 && !m_left_face:
+		_turn_around()
 
 func _aim():
 	m_attack_vector = m_last_hit_vector.normalized()
@@ -202,22 +211,22 @@ func _move_timer_complete():
 	_go()
 
 func _find_player():
-	$CollisionCast.scale.x = search_radius
+	if !_facing_player():
+		return false
 	_set_face_detection_enabled(true)
-	if $CollisionCast.is_colliding():
-		print("Hit a wall trying to find a player")
-		var point = $CollisionCast.get_collision_point()
+	var result = false
+	if $PlayerSearch.is_colliding():
+		var point = $PlayerSearch.get_collision_point()
 		var toPoint = point - position
 		var toPlayer = GameManager.player.position - position
 		_set_face_detection_enabled(false)
-		return toPoint.length() > toPlayer.length()
+		result = toPoint.length() > toPlayer.length()
 	else:
-		print("No wall hit, let's find the player.")
 		var playerInRange = (GameManager.player.position - position).length() < search_radius
 		var playerInVerticalTolerance = abs(GameManager.player.position.y - position.y) < vertical_search_tolerance
 		_set_face_detection_enabled(false)
-		return playerInRange && playerInVerticalTolerance
-
+		result =  playerInRange && playerInVerticalTolerance
+	return result
 
 func _target_found():
 	_attack()
@@ -225,6 +234,18 @@ func _target_found():
 func _target_lost():
 	_start_patrol()
 
+func _facing_player():
+	print("left face is ", m_left_face)
+	if m_left_face:
+		print("a player x position is ", GameManager.player.position.x)
+		print("a my position is ", position.x)
+		print("a facing player is ", position.x > GameManager.player.position.x)
+		return position.x > GameManager.player.position.x
+	else:
+		print("b player x position is ", GameManager.player.position.x)
+		print("b my position is ", position.x)
+		print("b facing player is ", position.x > GameManager.player.position.x)
+		return position.x < GameManager.player.position.x
 
 #runtime
 var m_origin:Vector2
@@ -234,7 +255,7 @@ var m_attack_vector:Vector2
 var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
-var m_original_raycast_distance
+var m_seen_player = false
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels
 
