@@ -10,7 +10,7 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 @export var vertical_search_tolerance:float
 func _ready():
 	m_current_health =  health_points
-	m_original_raycast_distance = $CollisionCast.scale.x
+	$PlayerSearch.scale.x = search_radius
 	var face = 1
 	if patrol_start_left:
 		face *= -1
@@ -41,6 +41,8 @@ func _process(delta):
 			if !_animating():
 				print("State Complete, moving on.")
 				_choose_next()
+	if velocity.x != 0:
+		_correct_face()
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
 
@@ -127,6 +129,12 @@ func _retreat():
 func _chase():
 	pass
 
+func _correct_face():
+	if velocity.x > 0 && m_left_face:
+		_turn_around()
+	else: if velocity.x < 0 && !m_left_face:
+		_turn_around()
+
 func _aim():
 	m_attack_vector = m_last_hit_vector.normalized()
 	if m_attack_vector.x > 0:
@@ -205,11 +213,10 @@ func _move_timer_complete():
 func _find_player():
 	if !_facing_player():
 		return false
-	$CollisionCast.scale.x = search_radius
 	_set_face_detection_enabled(true)
 	var result = false
-	if $CollisionCast.is_colliding():
-		var point = $CollisionCast.get_collision_point()
+	if $PlayerSearch.is_colliding():
+		var point = $PlayerSearch.get_collision_point()
 		var toPoint = point - position
 		var toPlayer = GameManager.player.position - position
 		_set_face_detection_enabled(false)
@@ -219,9 +226,7 @@ func _find_player():
 		var playerInVerticalTolerance = abs(GameManager.player.position.y - position.y) < vertical_search_tolerance
 		_set_face_detection_enabled(false)
 		result =  playerInRange && playerInVerticalTolerance
-	$CollisionCast.scale.x = m_original_raycast_distance
 	return result
-
 
 func _target_found():
 	_attack()
@@ -230,9 +235,16 @@ func _target_lost():
 	_start_patrol()
 
 func _facing_player():
+	print("left face is ", m_left_face)
 	if m_left_face:
+		print("a player x position is ", GameManager.player.position.x)
+		print("a my position is ", position.x)
+		print("a facing player is ", position.x > GameManager.player.position.x)
 		return position.x > GameManager.player.position.x
 	else:
+		print("b player x position is ", GameManager.player.position.x)
+		print("b my position is ", position.x)
+		print("b facing player is ", position.x > GameManager.player.position.x)
 		return position.x < GameManager.player.position.x
 
 #runtime
@@ -243,7 +255,6 @@ var m_attack_vector:Vector2
 var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
-var m_original_raycast_distance
 var m_seen_player = false
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels

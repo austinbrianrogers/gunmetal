@@ -51,5 +51,10 @@ position = Vector2(5, 27)
 target_position = Vector2(25, 0)
 collision_mask = 48
 
+[node name="PlayerSearch" type="RayCast2D" parent="."]
+position = Vector2(5, 22)
+target_position = Vector2(25, 0)
+collision_mask = 48
+
 [connection signal="died" from="." to="Area2D/HurtBox" method="queue_free"]
 [connection signal="body_entered" from="Area2D" to="." method="_hit"]
