@@ -15,7 +15,9 @@ func _ready():
 	if patrol_start_left:
 		face *= -1
 	var initial_vector = Vector2(patrol_radius * face, 0)
+	m_spawn_point = position
 	_set_destination_update_origin(position + initial_vector)
+	_set_face_detection_enabled(true)
 	_set_timers()
 	_charge()
 
@@ -25,15 +27,16 @@ func _physics_process(delta):
 	super(delta)
 
 func _process(delta):
+	_correct_face()
 	match m_target_state:
 		E_TARGET_STATE.PATROLLING:
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
-			if _find_player():
-				_halt(E_TARGET_STATE.ATTACKING)
 			if $CollisionCast.is_colliding():
 				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
+			if _find_player():
+				_halt(E_TARGET_STATE.ATTACKING)
 		#E_TARGET_STATE.ATTACKING:
 		#E_TARGET_STATE.CHARGING:
 		#E_TARGET_STATE.HIT:
@@ -41,8 +44,6 @@ func _process(delta):
 			if !_animating():
 				print("State Complete, moving on.")
 				_choose_next()
-	if velocity.x != 0:
-		_correct_face()
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
 
@@ -75,6 +76,7 @@ func _halt(reason):
 			$AnimatedSprite2D.play("Hit")
 			m_target_state = E_TARGET_STATE.HIT
 		E_TARGET_STATE.ATTACKING:
+			m_target_state = E_TARGET_STATE.ATTACKING
 			_return_fire()
 		#E_TARGET_STATE.HALTED:
 		#E_TARGET_STATE.WAITING:
@@ -84,18 +86,23 @@ func _halt(reason):
 			_choose_next()
 
 func _return_fire():
+	velocity.x = 0
+	$AnimatedSprite2D.play("Idle")
+	m_move_timer.stop()
 	_hide()
 	_aim()
 
 func _choose_next():
 	print("Thinking")
+	m_move_timer.stop()
+	m_attack_timer.stop()
+	#At this point, the character should be doing NOTHING and therefore the timers need to stop.
 	match m_target_state: 
 		E_TARGET_STATE.PATROLLING:
 			pass
-		E_TARGET_STATE.ATTACKING:
-			_start_attack()
 		E_TARGET_STATE.CHARGING:
 			_continue_patrol()
+		#E_TARGET_STATE.ATTACKING:
 		E_TARGET_STATE.HIT:
 			_return_fire()
 		#E_TARGET_STATE.IDLE:
@@ -104,15 +111,16 @@ func _choose_next():
 			_start_patrol()
 
 func _start_attack():
+	m_target_state = E_TARGET_STATE.ATTACKING
 	if m_current_charge <= 0:
 		_charge()
 	m_attack_timer.start()
 
 func _attack():
-	m_target_state = E_TARGET_STATE.ATTACKING
 	print("Fire!")
 	$AnimatedSprite2D.play("Shoot")
 	m_current_charge -= 1
+	m_attack_timer.stop()
 
 func _charge():
 	print("Reloading!")
@@ -137,15 +145,15 @@ func _correct_face():
 
 func _aim():
 	m_attack_vector = m_last_hit_vector.normalized()
-	if m_attack_vector.x > 0:
-		if !m_left_face:
-			_turn_around()
-	else: 
-		if m_left_face:
-			_turn_around()
-	
+	if m_attack_vector.x != 0:
+		if m_attack_vector.x > 0:
+			if !m_left_face:
+				_turn_around()
+		else: 
+			if m_left_face:
+				_turn_around()
 	if _find_player():
-		_attack()
+		_start_attack()
 	else:
 		_continue_patrol()
 
@@ -212,21 +220,10 @@ func _move_timer_complete():
 
 func _find_player():
 	if !_facing_player():
-		return false
-	_set_face_detection_enabled(true)
-	var result = false
-	if $PlayerSearch.is_colliding():
-		var point = $PlayerSearch.get_collision_point()
-		var toPoint = point - position
-		var toPlayer = GameManager.player.position - position
-		_set_face_detection_enabled(false)
-		result = toPoint.length() > toPlayer.length()
+		return
 	else:
-		var playerInRange = (GameManager.player.position - position).length() < search_radius
-		var playerInVerticalTolerance = abs(GameManager.player.position.y - position.y) < vertical_search_tolerance
-		_set_face_detection_enabled(false)
-		result =  playerInRange && playerInVerticalTolerance
-	return result
+		return $PlayerSearch.get_collider() != null && $PlayerSearch.get_collider().name == Strings.PlayerNodeName
+	
 
 func _target_found():
 	_attack()
@@ -235,16 +232,9 @@ func _target_lost():
 	_start_patrol()
 
 func _facing_player():
-	print("left face is ", m_left_face)
 	if m_left_face:
-		print("a player x position is ", GameManager.player.position.x)
-		print("a my position is ", position.x)
-		print("a facing player is ", position.x > GameManager.player.position.x)
 		return position.x > GameManager.player.position.x
 	else:
-		print("b player x position is ", GameManager.player.position.x)
-		print("b my position is ", position.x)
-		print("b facing player is ", position.x > GameManager.player.position.x)
 		return position.x < GameManager.player.position.x
 
 #runtime
@@ -256,6 +246,7 @@ var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
 var m_seen_player = false
+var m_spawn_point:Vector2
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels
 

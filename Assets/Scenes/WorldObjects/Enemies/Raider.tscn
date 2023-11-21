@@ -22,7 +22,7 @@ script = ExtResource("1_rtkdk")
 patrol_radius = 200.0
 walk_speed = 50.0
 wait_time_between_moves = 2.0
-wait_time_between_attacks = 1.0
+wait_time_between_attacks = 3.0
 attacks_between_charge = 2
 patrol_start_left = true
 search_radius = 400.0
@@ -54,7 +54,7 @@ collision_mask = 48
 [node name="PlayerSearch" type="RayCast2D" parent="."]
 position = Vector2(5, 22)
 target_position = Vector2(25, 0)
-collision_mask = 48
+collision_mask = 49
 
 [connection signal="died" from="." to="Area2D/HurtBox" method="queue_free"]
 [connection signal="body_entered" from="Area2D" to="." method="_hit"]

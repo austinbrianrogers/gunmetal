@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Maths="*res://Assets/Scripts/Utilities/Maths.cs"
 Physics="*res://Assets/Scripts/Utilities/Physics.cs"
 GameManager="*res://Assets/Scripts/Utilities/GameManager.gd"
+Strings="*res://Assets/Scripts/Utilities/Strings.cs"
 
 [dotnet]
 
