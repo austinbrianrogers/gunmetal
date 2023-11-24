@@ -1,9 +1,10 @@
-[gd_resource type="SpriteFrames" load_steps=60 format=3 uid="uid://dtokhhs3l7lks"]
+[gd_resource type="SpriteFrames" load_steps=64 format=3 uid="uid://dtokhhs3l7lks"]
 
 [ext_resource type="Texture2D" uid="uid://chdm6xaa74uf7" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Dead.png" id="1_3ruw1"]
 [ext_resource type="Texture2D" uid="uid://ccc81ew1vavd3" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Hurt.png" id="1_hef0n"]
 [ext_resource type="Texture2D" uid="uid://c448lcwphdy4o" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Idle.png" id="2_w2cav"]
 [ext_resource type="Texture2D" uid="uid://cvfg25tow7xr" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Recharge.png" id="4_8pbhj"]
+[ext_resource type="Texture2D" uid="uid://bghh2ak4iymwu" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Attack_2.png" id="4_f06uc"]
 [ext_resource type="Texture2D" uid="uid://cgub7cdvi32vi" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Run.png" id="4_nub6x"]
 [ext_resource type="Texture2D" uid="uid://cau2la4pb7i6" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Walk.png" id="5_qckxq"]
 [ext_resource type="Texture2D" uid="uid://ceumlfhti3ijq" path="res://Assets/ImageAssets/CharacterSheets/Criminals/Raider_1/Shot.png" id="5_spkh5"]
@@ -55,6 +56,18 @@ region = Rect2(512, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ddtbj"]
 atlas = ExtResource("2_w2cav")
 region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mg8f"]
+atlas = ExtResource("4_f06uc")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsjfv"]
+atlas = ExtResource("4_f06uc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6nnu"]
+atlas = ExtResource("4_f06uc")
+region = Rect2(256, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a421q"]
 atlas = ExtResource("4_8pbhj")
@@ -268,6 +281,20 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mg8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsjfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6nnu")
+}],
+"loop": false,
+"name": &"Melee",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
