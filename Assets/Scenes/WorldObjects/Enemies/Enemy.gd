@@ -33,17 +33,23 @@ func _process(delta):
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
 			if $CollisionCast.is_colliding():
-				_set_face_detection_enabled(false)
 				_halt(E_TARGET_STATE.HALTED)
-			if _find_player():
+			else: if _find_player():
 				_halt(E_TARGET_STATE.ATTACKING)
-		#E_TARGET_STATE.ATTACKING:
+		E_TARGET_STATE.ATTACKING:
+			if !_animating():
+				_choose_next()
+				return
+		#E_TARGET_STATE.MELEE:
 		#E_TARGET_STATE.CHARGING:
 		#E_TARGET_STATE.HIT:
 		_:
 			if !_animating():
-				print("State Complete, moving on.")
 				_choose_next()
+				return
+			if $CollisionCast.is_colliding():
+				_halt(E_TARGET_STATE.HALTED)
+
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
 
@@ -56,10 +62,12 @@ func _start_patrol():
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
+	_set_face_detection_enabled(true)
 
 func _continue_patrol():
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
+	_set_face_detection_enabled(true)
 	
 func _go():
 	var vector = m_destination - position
@@ -69,8 +77,8 @@ func _go():
 	_set_face_detection_enabled(true)
 
 func _halt(reason):
-	print("Stopping")
-	velocity.x = 0
+	_set_face_detection_enabled(false)
+	_idle()
 	match reason:
 		E_TARGET_STATE.HIT:
 			$AnimatedSprite2D.play("Hit")
@@ -86,14 +94,12 @@ func _halt(reason):
 			_choose_next()
 
 func _return_fire():
-	velocity.x = 0
-	$AnimatedSprite2D.play("Idle")
+	_idle()
 	m_move_timer.stop()
 	_hide()
 	_aim()
 
 func _choose_next():
-	print("Thinking")
 	m_move_timer.stop()
 	m_attack_timer.stop()
 	#At this point, the character should be doing NOTHING and therefore the timers need to stop.
@@ -102,31 +108,45 @@ func _choose_next():
 			pass
 		E_TARGET_STATE.CHARGING:
 			_continue_patrol()
-		#E_TARGET_STATE.ATTACKING:
+		E_TARGET_STATE.MELEE:
+			_continue_patrol()
 		E_TARGET_STATE.HIT:
 			_return_fire()
+		#E_TARGET_STATE.ATTACKING:
 		#E_TARGET_STATE.IDLE:
 		#E_TARGET_STATE.WAITING:
 		_:
 			_start_patrol()
 
 func _start_attack():
-	m_target_state = E_TARGET_STATE.ATTACKING
+	if _can_melee():
+		_melee_attack()
+		m_target_state = E_TARGET_STATE.MELEE
+		_set_face_detection_enabled(false)
+		return
+
 	if m_current_charge <= 0:
 		_charge()
-	m_attack_timer.start()
+	else:
+		m_target_state = E_TARGET_STATE.ATTACKING
+		m_attack_timer.start()
 
 func _attack():
-	print("Fire!")
 	$AnimatedSprite2D.play("Shoot")
 	m_current_charge -= 1
 	m_attack_timer.stop()
 
 func _charge():
-	print("Reloading!")
 	m_target_state = E_TARGET_STATE.CHARGING
 	m_current_charge = attacks_between_charge
 	$AnimatedSprite2D.play("Reload")
+
+func _melee_attack():
+	print("smack")
+	m_target_state = E_TARGET_STATE.MELEE
+	m_move_timer.stop()
+	m_attack_timer.stop()
+	$AnimatedSprite2D.play("Melee")
 
 func _hide():
 	pass
@@ -222,8 +242,7 @@ func _find_player():
 	if !_facing_player():
 		return
 	else:
-		return $PlayerSearch.get_collider() != null && $PlayerSearch.get_collider().name == Strings.PlayerNodeName
-	
+		return $PlayerSearch.get_collider() != null && $PlayerSearch.get_collider().name == Strings.PlayerNodeName	
 
 func _target_found():
 	_attack()
@@ -236,6 +255,15 @@ func _facing_player():
 		return position.x > GameManager.player.position.x
 	else:
 		return position.x < GameManager.player.position.x
+
+func _can_melee():
+	var collided = $CollisionCast.get_collider()
+	if collided == null: 
+		return false
+		
+	var name_string = collided.name
+	$CollisionCast.force_raycast_update()
+	return name_string == Strings.PlayerNodeName
 
 #runtime
 var m_origin:Vector2

@@ -71,6 +71,12 @@ func _is_moving_right():
 
 func _animating():
 	return $AnimatedSprite2D.is_playing()
+
+func _idle():
+	_set_face_detection_enabled(true)
+	velocity.x = 0
+	$AnimatedSprite2D.play("Idle")
+
 #runtiume members
 var m_current_health
 var m_time_of_death = ALIVE #default
@@ -93,4 +99,5 @@ enum E_TARGET_STATE {
 	PLAYER,
 	IDLE,
 	SEARCHING,
+	MELEE
 }
