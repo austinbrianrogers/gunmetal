@@ -19,10 +19,22 @@ func _process(_delta):
 			_clean_up()
 
 func _physics_process(_delta):
-	if _is_moving_left() && !m_left_face:
+	_correct_face()
+
+func _correct_face():
+	if velocity.x > 0 && m_left_face:
 		_turn_around()
-	else: if _is_moving_right() && m_left_face:
+	else: if velocity.x < 0 && !m_left_face:
 		_turn_around()
+
+func _correct_face_to(vector:Vector2):
+	if _is_left_of(vector) && m_left_face:
+		_turn_around()
+	else:if !_is_left_of(vector) && !m_left_face:
+		_turn_around()
+
+func _is_left_of(pos:Vector2):
+	return (pos - position).x < 0
 
 func _on_body_entered(body):
 	if(_is_dead()): pass
@@ -56,6 +68,7 @@ func _is_dead():
 func _turn_around():
 	m_left_face = !m_left_face
 	scale.x = -1
+	print("flippy")
 """
 It turns out that scale is always relative. Always. So if you turn the character around using scale -1,
 you don't set it +1 to return to normal. You set the scale as -1 again._add_constant_central_force_add_constant_central_force
@@ -73,7 +86,6 @@ func _animating():
 	return $AnimatedSprite2D.is_playing()
 
 func _idle():
-	_set_face_detection_enabled(true)
 	velocity.x = 0
 	$AnimatedSprite2D.play("Idle")
 

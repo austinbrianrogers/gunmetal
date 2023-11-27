@@ -11,25 +11,20 @@ extends "res://Assets/Scenes/WorldObjects/Enemies/target.gd"
 func _ready():
 	m_current_health =  health_points
 	$PlayerSearch.scale.x = search_radius
-	var face = 1
-	if patrol_start_left:
-		face *= -1
+	var face = -1 if patrol_start_left else 1
 	var initial_vector = Vector2(patrol_radius * face, 0)
-	m_spawn_point = position
 	_set_destination_update_origin(position + initial_vector)
-	_set_face_detection_enabled(true)
 	_set_timers()
 	_charge()
 
 func _physics_process(delta):
 	velocity.y += delta * Maths.Gravity
 	move_and_slide()
-	super(delta)
 
 func _process(delta):
-	_correct_face()
 	match m_target_state:
 		E_TARGET_STATE.PATROLLING:
+			_correct_face()
 			if _reached_destination():
 				_halt(E_TARGET_STATE.HALTED)
 			if $CollisionCast.is_colliding():
@@ -49,7 +44,7 @@ func _process(delta):
 				return
 			if $CollisionCast.is_colliding():
 				_halt(E_TARGET_STATE.HALTED)
-
+	
 	super(delta) #SUPER call must come at the end,
 	#as it can override the enemy state if nothing is happening.
 
@@ -59,24 +54,28 @@ func _nudge(left:bool):
 	position += ($CollisionShape2D.get_node("Node2D").transform.width) * dir
 
 func _start_patrol():
+	print("start patrol")
 	_choose_destination()
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	_set_face_detection_enabled(true)
 
 func _continue_patrol():
+	print("continue patrol")
 	m_target_state = E_TARGET_STATE.PATROLLING
 	m_move_timer.start()
-	_set_face_detection_enabled(true)
 	
 func _go():
+	print("go")
 	var vector = m_destination - position
-	vector = vector.normalized()
-	velocity.x = vector.x * walk_speed
+	var vector_normal = vector.normalized()
+	_correct_face_to(vector)
+	velocity.x = vector_normal.x * walk_speed
 	$AnimatedSprite2D.play("Walk")
+	m_move_timer.stop()
 	_set_face_detection_enabled(true)
 
 func _halt(reason):
+	print("halt")
 	_set_face_detection_enabled(false)
 	_idle()
 	match reason:
@@ -100,6 +99,7 @@ func _return_fire():
 	_aim()
 
 func _choose_next():
+	print("choose")
 	m_move_timer.stop()
 	m_attack_timer.stop()
 	#At this point, the character should be doing NOTHING and therefore the timers need to stop.
@@ -119,10 +119,11 @@ func _choose_next():
 			_start_patrol()
 
 func _start_attack():
+	_set_face_detection_enabled(true)
+	print("start attack")
 	if _can_melee():
 		_melee_attack()
 		m_target_state = E_TARGET_STATE.MELEE
-		_set_face_detection_enabled(false)
 		return
 
 	if m_current_charge <= 0:
@@ -132,11 +133,15 @@ func _start_attack():
 		m_attack_timer.start()
 
 func _attack():
+	_set_face_detection_enabled(false)
+	print("fire!")
 	$AnimatedSprite2D.play("Shoot")
 	m_current_charge -= 1
 	m_attack_timer.stop()
 
 func _charge():
+	_set_face_detection_enabled(false)
+	print("reload!")
 	m_target_state = E_TARGET_STATE.CHARGING
 	m_current_charge = attacks_between_charge
 	$AnimatedSprite2D.play("Reload")
@@ -156,12 +161,6 @@ func _retreat():
 
 func _chase():
 	pass
-
-func _correct_face():
-	if velocity.x > 0 && m_left_face:
-		_turn_around()
-	else: if velocity.x < 0 && !m_left_face:
-		_turn_around()
 
 func _aim():
 	m_attack_vector = m_last_hit_vector.normalized()
@@ -192,10 +191,8 @@ func _update_origin():
 	m_origin = position
 
 func _choose_destination():
-	var face = 1
-	if (_is_left_of(m_origin)):
-		face = -1
-	_set_destination_update_origin(Vector2(position + Vector2(patrol_radius * face, 0)))
+	var x = -patrol_radius if _is_left_of(m_origin) else patrol_radius
+	_set_destination_update_origin(Vector2(position.x + x, position.y))
 
 func _set_destination_update_origin(destination:Vector2):
 	m_destination = destination
@@ -210,14 +207,8 @@ func _reached_destination():
 	else:
 		return false
 
-func _destined_left():
-	return (m_destination - position).x < 0
-
 func _set_face_detection_enabled(enabled:bool):
 	$CollisionCast.enabled = enabled
-
-func _is_left_of(pos:Vector2):
-	return (pos - position).x < 0
 
 func _set_timers():
 	m_move_timer = Timer.new()
@@ -240,7 +231,7 @@ func _move_timer_complete():
 
 func _find_player():
 	if !_facing_player():
-		return
+		return false
 	else:
 		return $PlayerSearch.get_collider() != null && $PlayerSearch.get_collider().name == Strings.PlayerNodeName	
 
@@ -260,7 +251,6 @@ func _can_melee():
 	var collided = $CollisionCast.get_collider()
 	if collided == null: 
 		return false
-		
 	var name_string = collided.name
 	$CollisionCast.force_raycast_update()
 	return name_string == Strings.PlayerNodeName
@@ -273,8 +263,6 @@ var m_attack_vector:Vector2
 var m_current_charge:int = attacks_between_charge
 var m_attack_timer
 var m_move_timer
-var m_seen_player = false
-var m_spawn_point:Vector2
 #compile
 const DESTINATION_TOLERANCE:int = 30 #pixels
 
