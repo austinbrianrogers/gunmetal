@@ -57,3 +57,8 @@ size_flags_vertical = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Control"]
 sprite_frames = ExtResource("2_au15a")
 animation = &"Default"
+
+[connection signal="prone_left_shooting" from="." to="BulletSources/ProneBulletSource" method="_fire" binds= [false]]
+[connection signal="prone_right_shooting" from="." to="BulletSources/ProneBulletSource" method="_fire" binds= [true]]
+[connection signal="standing_left_shooting" from="." to="BulletSources/StandingBulletSource" method="_fire" binds= [false]]
+[connection signal="standing_right_shooting" from="." to="BulletSources/StandingBulletSource" method="_fire" binds= [true]]
